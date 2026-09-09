@@ -6,6 +6,7 @@ export interface Product {
     description: string;
     prices: StorePrices[];
     imageUrl?: string;
+    url: string;
 };
 
 export interface StorePrices {
