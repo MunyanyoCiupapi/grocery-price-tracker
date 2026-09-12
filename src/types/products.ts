@@ -6,7 +6,6 @@ export interface Product {
     description: string;
     prices: StorePrices[];
     imageUrl?: string;
-    url: string;
 };
 
 export interface StorePrices {
@@ -15,6 +14,7 @@ export interface StorePrices {
     oldPrice?: number;
     isOnSale?: boolean;
     measurementUnit?: string;
+    url: string;
 };
 
 export interface Basket {

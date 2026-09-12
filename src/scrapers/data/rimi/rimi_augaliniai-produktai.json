@@ -1,0 +1,604 @@
+[
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Nesaldintas migdolų gėrimas ALPRO, 1 l",
+    "description": "Nesaldintas migdolų gėrimas ALPRO, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.29,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/nesaldintas-migdolu-gerimas-alpro-1-l/p/928175"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_928175_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Avižų gėrimas ALPRO Barista, 1 l",
+    "description": "Avižų gėrimas ALPRO Barista, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.69,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/avizu-gerimas-alpro-barista-1-l/p/966544"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_966544_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Kokosų gėrimas ALPRO Barista, 1 L",
+    "description": "Kokosų gėrimas ALPRO Barista, 1 L",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.69,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/kokosu-gerimas-alpro-barista-1-l/p/936940"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_936940_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Migdolų gėrimas ALPRO Barista, 1 l",
+    "description": "Migdolų gėrimas ALPRO Barista, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.69,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/migdolu-gerimas-alpro-barista-1-l/p/962515"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_962515_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Avižų gėrimas kavai ODDLYGOOD BARISTA, 0,5 l",
+    "description": "Avižų gėrimas kavai ODDLYGOOD BARISTA, 0,5 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.59,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/avizu-gerimas-kavai-oddlygood-barista-0-5-l/p/4009532"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_4009532_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Natūralus tofu LUNTER, 180 g",
+    "description": "Natūralus tofu LUNTER, 180 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.89,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augalines-surio-ir-tofu-alternatyvos/tofu/naturalus-tofu-lunter-180-g/p/4000769"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_4000769_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Avižų gėrimas kav. ODDLYGOOD BARISTA UAT, 1 l",
+    "description": "Avižų gėrimas kav. ODDLYGOOD BARISTA UAT, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.59,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/avizu-gerimas-kav-oddlygood-barista-uat-1-l/p/957905"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_957905_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Augalinis migdolų gėrimas VALSOIA ZERO, 1 l",
+    "description": "Augalinis migdolų gėrimas VALSOIA ZERO, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.99,
+        "oldPrice": 2.89,
+        "isOnSale": true,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/augalinis-migdolu-gerimas-valsoia-zero-1-l/p/968460"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_968460_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ekologiškas natūralus ryžių gėrimas, 1l",
+    "description": "Ekologiškas natūralus ryžių gėrimas, 1l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.19,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/ekologiskas-naturalus-ryziu-gerimas-1l/p/275786"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_275786_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "GREEN SMOOTHIE skon. ledai SUPER VIVA, 170 ml",
+    "description": "GREEN SMOOTHIE skon. ledai SUPER VIVA, 170 ml",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.19,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/saldytas-maistas/ledai-/ledai-be/green-smoothie-skon-ledai-super-viva-170-ml/p/987801"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_987801_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ekol. avižų gėrimas SALLING VEGGIE, 1 l",
+    "description": "Ekol. avižų gėrimas SALLING VEGGIE, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.59,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/ekol-avizu-gerimas-salling-veggie-1-l/p/816757"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_816757_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Vanilinis sojos gėrimas ALPRO, 1l",
+    "description": "Vanilinis sojos gėrimas ALPRO, 1l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.19,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/vanilinis-sojos-gerimas-alpro-1l/p/271874"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_271874_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ferm. soj. produktas su mang.vais. ALPRO,400g",
+    "description": "Ferm. soj. produktas su mang.vais. ALPRO,400g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.79,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-desertai/augaliniai-desertai/ferm-soj-produktas-su-mang-vais-alpro-400g/p/983241"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_983241_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Balt. sojų gaminys su prieskoniais TOFU, 150g",
+    "description": "Balt. sojų gaminys su prieskoniais TOFU, 150g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.99,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augalines-surio-ir-tofu-alternatyvos/tofu/balt-soju-gaminys-su-prieskoniais-tofu-150g/p/281058"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_281058_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ferment. mangų sk. sojos produktas ALPRO,400g",
+    "description": "Ferment. mangų sk. sojos produktas ALPRO,400g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.79,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-desertai/augaliniai-desertai/ferment-mangu-sk-sojos-produktas-alpro-400g/p/987588"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_987588_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Avižų gėrimas OATLY BARISTA EDITION, 1 l",
+    "description": "Avižų gėrimas OATLY BARISTA EDITION, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.29,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/avizu-gerimas-oatly-barista-edition-1-l/p/993139"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_993139_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Anakardžių ledai su riešutais VALSOIA, 80 g",
+    "description": "Anakardžių ledai su riešutais VALSOIA, 80 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.19,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/saldytas-maistas/ledai-/ledai-be/anakardziu-ledai-su-riesutais-valsoia-80-g/p/988345"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_988345_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Eko.aug.kilm.pagrindas maist.r..,250ml",
+    "description": "Eko.aug.kilm.pagrindas maist.r..,250ml",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.99,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/kreminiai-augaliniai-produktai/eko-aug-kilm-pagrindas-maist-r-250ml/p/961170"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_961170_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ekol. migdolų gėrimas be cukr. THE BRIDGE, 1l",
+    "description": "Ekol. migdolų gėrimas be cukr. THE BRIDGE, 1l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.89,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/ekol-migdolu-gerimas-be-cukr-the-bridge-1l/p/938412"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_938412_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Sojos gėrimas natūralus+CA  ALPRO, 1 l",
+    "description": "Sojos gėrimas natūralus+CA  ALPRO, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.69,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/sojos-gerimas-naturalus-ca-alpro-1-l/p/201388"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_201388_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ledai VALSOIA CONES, 4 X 480ml",
+    "description": "Ledai VALSOIA CONES, 4 X 480ml",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 6.49,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/saldytas-maistas/ledai-/ledai-be/ledai-valsoia-cones-4-x-480ml/p/916462"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_916462_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Nesald. avižų skonio gėrimas ALPRO, 1 l",
+    "description": "Nesald. avižų skonio gėrimas ALPRO, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.29,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/nesald-avizu-skonio-gerimas-alpro-1-l/p/968288"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_968288_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "8 sumuštinio formos valgomieji ledai, 320g",
+    "description": "8 sumuštinio formos valgomieji ledai, 320g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 5.99,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/saldytas-maistas/ledai-/ledai-be/8-sumustinio-formos-valgomieji-ledai-320g/p/916452"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_916452_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ekologiškas rūkytas sojų tofu BERIEF, 350 g",
+    "description": "Ekologiškas rūkytas sojų tofu BERIEF, 350 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.79,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augalines-surio-ir-tofu-alternatyvos/tofu/ekologiskas-rukytas-soju-tofu-berief-350-g/p/984514"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_984514_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Migdolų gėrimas ALPRO, 1 l",
+    "description": "Migdolų gėrimas ALPRO, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.29,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/migdolu-gerimas-alpro-1-l/p/297234"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_297234_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Migdolų gėrimas VALSOIA , 1l",
+    "description": "Migdolų gėrimas VALSOIA , 1l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.99,
+        "oldPrice": 2.89,
+        "isOnSale": true,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/migdolu-gerimas-valsoia-1l/p/916402"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_916402_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Fermentuot.sojos produktas su vais.ALPRO,400g",
+    "description": "Fermentuot.sojos produktas su vais.ALPRO,400g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.79,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-desertai/augaliniai-desertai/fermentuot-sojos-produktas-su-vais-alpro-400g/p/995137"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_995137_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ekologiškas migdolų skonio ryžių gėrimas, 1l",
+    "description": "Ekologiškas migdolų skonio ryžių gėrimas, 1l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.99,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/ekologiskas-migdolu-skonio-ryziu-gerimas-1l/p/277408"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_277408_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ekol. migd. gėrimas SALLING VEGGIE, UHT, 1 l",
+    "description": "Ekol. migd. gėrimas SALLING VEGGIE, UHT, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.59,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/ekol-migd-gerimas-salling-veggie-uht-1-l/p/816998"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_816998_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Avižų gėrimas SALLING VEGGIE BARISTA, 1 l",
+    "description": "Avižų gėrimas SALLING VEGGIE BARISTA, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.29,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/avizu-gerimas-salling-veggie-barista-1-l/p/816755"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_816755_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Avižų gėrimas be lakt.,pien.b.,cuk. ALPRO, 1l",
+    "description": "Avižų gėrimas be lakt.,pien.b.,cuk. ALPRO, 1l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.29,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/avizu-gerimas-be-lakt-pien-b-cuk-alpro-1l/p/911167"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_911167_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Juod. šokolado sk. sojų desertas ALPRO, 125 g",
+    "description": "Juod. šokolado sk. sojų desertas ALPRO, 125 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.09,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-desertai/augaliniai-desertai/juod-sokolado-sk-soju-desertas-alpro-125-g/p/281036"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_281036_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Šokoladinis sojų desertas ALPRO, 125g",
+    "description": "Šokoladinis sojų desertas ALPRO, 125g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.09,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-desertai/augaliniai-desertai/sokoladinis-soju-desertas-alpro-125g/p/201395"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_201395_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Pistac. sk. migdolų pudingas VALSOIA, 2x115 g",
+    "description": "Pistac. sk. migdolų pudingas VALSOIA, 2x115 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.99,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-desertai/augaliniai-desertai/pistac-sk-migdolu-pudingas-valsoia-2x115-g/p/985653"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_985653_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Avižų kremas kepimui TERE DEARY, 250 ml",
+    "description": "Avižų kremas kepimui TERE DEARY, 250 ml",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.89,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/kreminiai-augaliniai-produktai/avizu-kremas-kepimui-tere-deary-250-ml/p/974122"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_974122_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Kokosų ir ryžių gėrimas be laktoz. ALPRO, 1l",
+    "description": "Kokosų ir ryžių gėrimas be laktoz. ALPRO, 1l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.29,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/kokosu-ir-ryziu-gerimas-be-laktoz-alpro-1l/p/909336"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_909336_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Vanilinis sojų desertas ALPRO, 125g",
+    "description": "Vanilinis sojų desertas ALPRO, 125g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.09,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-desertai/augaliniai-desertai/vanilinis-soju-desertas-alpro-125g/p/201396"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_201396_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Aug. kilm. užtepėlė su gryb. VETO PATIFU,100g",
+    "description": "Aug. kilm. užtepėlė su gryb. VETO PATIFU,100g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.59,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augalines-mesos-ir-zuvies-alternatyvos/aug-kilm-uztepele-su-gryb-veto-patifu-100g/p/984535"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_984535_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Tepamasis kremas Oatly 150g",
+    "description": "Tepamasis kremas Oatly 150g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.79,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augalines-surio-ir-tofu-alternatyvos/augalines-surio-alternatyvos/tepamasis-kremas-oatly-150g/p/930066"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_930066_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Sojų gėrimas ORIGINAL VALSOIA, 1l",
+    "description": "Sojų gėrimas ORIGINAL VALSOIA, 1l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.89,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/augaliniai-produktai/augaliniai-gerimai/augaliniai-gerimai/soju-gerimas-original-valsoia-1l/p/916387"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_916387_PCE_LT"
+  }
+]

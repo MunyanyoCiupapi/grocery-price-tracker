@@ -1,0 +1,1208 @@
+[
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Kavos gėrimas HOCHWALD EISKAFFEE, 1,5%, 500ml",
+    "description": "Kavos gėrimas HOCHWALD EISKAFFEE, 1,5%, 500ml",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.29,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/pienas/salta-kava/kavos-gerimas-hochwald-eiskaffee-1-5-500ml/p/248515"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_248515_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Šokoladinis pieno gėrimas HOCHWALD,1,5%,500ml",
+    "description": "Šokoladinis pieno gėrimas HOCHWALD,1,5%,500ml",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.39,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/pienas/pieno-gerimai/sokoladinis-pieno-gerimas-hochwald-1-5-500ml/p/984910"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_984910_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Šalta kava LANDESSA LATTE MACCIATO, 230 ml",
+    "description": "Šalta kava LANDESSA LATTE MACCIATO, 230 ml",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.79,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/pienas/salta-kava/salta-kava-landessa-latte-macciato-230-ml/p/918457"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_918457_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Šalta kava LANDESSA CAPPUCCINO, 230 ml",
+    "description": "Šalta kava LANDESSA CAPPUCCINO, 230 ml",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.79,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/pienas/salta-kava/salta-kava-landessa-cappuccino-230-ml/p/918424"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_918424_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Sūrio lazdelės MIAU, 40 % rieb. s. m., 270 g",
+    "description": "Sūrio lazdelės MIAU, 40 % rieb. s. m., 270 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 4.99,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/surio-uzkandziai-ir-lazdeles/surio-lazdeles-miau-40-rieb-s-m-270-g/p/4012462"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_4012462_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ožkų pieno sūris DELI Q, 130 g",
+    "description": "Ožkų pieno sūris DELI Q, 130 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.59,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/aviu-ir-ozku-pieno-suris/ozku-pieno-suris-deli-q-130-g/p/4012407"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_4012407_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Sūrio lazdelės MIAU, 40 % rieb. s. m., 90 g",
+    "description": "Sūrio lazdelės MIAU, 40 % rieb. s. m., 90 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.45,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/surio-uzkandziai-ir-lazdeles/surio-lazdeles-miau-40-rieb-s-m-90-g/p/4012453"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_4012453_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Laisvai laikomų vištų kiaušiniai RIMI,10 vnt.",
+    "description": "Laisvai laikomų vištų kiaušiniai RIMI,10 vnt.",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.95,
+        "isOnSale": false,
+        "measurementUnit": "vnt.",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/kiausiniai/1---laisvai-laikomu-vistu-kiausiniai-/laisvai-laikomu-vistu-kiausiniai-rimi-10-vnt-/p/813719"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_813719_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Gr. nat. jogurtas GRAIKIŠKA AMFORA, 3,9%,370g",
+    "description": "Gr. nat. jogurtas GRAIKIŠKA AMFORA, 3,9%,370g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.99,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/jogurtai-ir-desertai/jogurtai-be-pagardu/gr-nat-jogurtas-graikiska-amfora-3-9-370g/p/927768"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_927768_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Kaimiški kiaušiniai RIMI (M dydis), 10 vnt.",
+    "description": "Kaimiški kiaušiniai RIMI (M dydis), 10 vnt.",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.19,
+        "isOnSale": false,
+        "measurementUnit": "vnt.",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/kiausiniai/2---ant-kraiko-laikomu-vistu-kiausiniai-/kaimiski-kiausiniai-rimi-m-dydis-10-vnt-/p/803267"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_803267_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Sūris RIMI MOZZARELLA, 45% rieb., 125g",
+    "description": "Sūris RIMI MOZZARELLA, 45% rieb., 125g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.85,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/fetos-ir-mocarelos-suriai/suris-rimi-mozzarella-45-rieb-125g/p/805802"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_805802_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ekol. vištų kiaušin.Rimi Eco,M/L,10 vnt.",
+    "description": "Ekol. vištų kiaušin.Rimi Eco,M/L,10 vnt.",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.49,
+        "isOnSale": false,
+        "measurementUnit": "vnt.",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/kiausiniai/0---ekologiski-kiausiniai/ekol-vistu-kiausin-rimi-eco-m-l-10-vnt-/p/813372"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_813372_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Sald. grietinėlės DVARO sviestas, 82 %, 200 g",
+    "description": "Sald. grietinėlės DVARO sviestas, 82 %, 200 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.69,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/sviestas/sviestas/sald-grietineles-dvaro-sviestas-82-200-g/p/249081"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_249081_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "ROKIŠKIO sviestas, 82 % rieb., 200 g",
+    "description": "ROKIŠKIO sviestas, 82 % rieb., 200 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.79,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/sviestas/sviestas/rokiskio-sviestas-82-rieb-200-g/p/248955"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_248955_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Grūdėta varškė PIENO ŽVAIGŽDĖS, 7 %, 200 g",
+    "description": "Grūdėta varškė PIENO ŽVAIGŽDĖS, 7 %, 200 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.69,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/varskes-produktai/grudeta-varske/grudeta-varske-pieno-zvaigzdes-7-200-g/p/978782"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_978782_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "ŽEMAITIJOS sviestas, 82 % rieb., 200 g",
+    "description": "ŽEMAITIJOS sviestas, 82 % rieb., 200 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.99,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/sviestas/sviestas/zemaitijos-sviestas-82-rieb-200-g/p/149795"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_149795_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Varškė VILVI, 9 % rieb., 180 g",
+    "description": "Varškė VILVI, 9 % rieb., 180 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.95,
+        "oldPrice": 1.19,
+        "isOnSale": true,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/varskes-produktai/varske/varske-vilvi-9-rieb-180-g/p/276598"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_276598_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Grietinė RIMI SMART, 30 % rieb., 400 g",
+    "description": "Grietinė RIMI SMART, 30 % rieb., 400 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.55,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/grietine-ir-grietinele/grietine-/grietine-rimi-smart-30-rieb-400-g/p/814672"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_814672_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Varškės sūrelis su vanile KARUMS, 45 g",
+    "description": "Varškės sūrelis su vanile KARUMS, 45 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.65,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/jogurtai-ir-desertai/glaistyti-varskes-sureliai/varskes-surelis-su-vanile-karums-45-g/p/269082"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_269082_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Šviežias sūris RIMI, 20% rieb., 150g",
+    "description": "Šviežias sūris RIMI, 20% rieb., 150g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.05,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/tepamieji-suriai/sviezias-suris-rimi-20-rieb-150g/p/808713"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_808713_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Liesa varškė RIMI SMART, 0,5 % rieb., 180 g",
+    "description": "Liesa varškė RIMI SMART, 0,5 % rieb., 180 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.69,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/varskes-produktai/varske/liesa-varske-rimi-smart-0-5-rieb-180-g/p/813690"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_813690_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Kietasis tarkuotas sūris RIMI, 80g",
+    "description": "Kietasis tarkuotas sūris RIMI, 80g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.19,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/tarkuotas-suris/kietasis-tarkuotas-suris-rimi-80g/p/805806"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_805806_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Pasterizuota grietinėlė RIMI, 30 %, 200 ml",
+    "description": "Pasterizuota grietinėlė RIMI, 30 %, 200 ml",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.49,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/grietine-ir-grietinele/grietinele/pasterizuota-grietinele-rimi-30-200-ml/p/811005"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_811005_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "DVARO varškė, 9 % rieb., 400 g",
+    "description": "DVARO varškė, 9 % rieb., 400 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.99,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/varskes-produktai/varske/dvaro-varske-9-rieb-400-g/p/291630"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_291630_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Graikiškas jogurtas be priedų AISTĖ, 400 g",
+    "description": "Graikiškas jogurtas be priedų AISTĖ, 400 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.89,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/jogurtai-ir-desertai/jogurtai-be-pagardu/graikiskas-jogurtas-be-priedu-aiste-400-g/p/903780"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_903780_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Natūralus DVARO pienas, 3,5 % rieb., 1 l",
+    "description": "Natūralus DVARO pienas, 3,5 % rieb., 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.65,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/pienas/pasterizuotas-pienas/naturalus-dvaro-pienas-3-5-rieb-1-l/p/212915"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_212915_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Plėš. sūrio lazdelės PIK-NIK, 40% rieb., 140g",
+    "description": "Plėš. sūrio lazdelės PIK-NIK, 40% rieb., 140g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.79,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/surio-uzkandziai-ir-lazdeles/ples-surio-lazdeles-pik-nik-40-rieb-140g/p/273732"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_273732_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ant kr. laik. vištų kiauš. RIMI, A/L, 10 vnt.",
+    "description": "Ant kr. laik. vištų kiauš. RIMI, A/L, 10 vnt.",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.69,
+        "isOnSale": false,
+        "measurementUnit": "vnt.",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/kiausiniai/2---ant-kraiko-laikomu-vistu-kiausiniai-/ant-kr-laik-vistu-kiaus-rimi-a-l-10-vnt-/p/816708"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_816708_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "DVARO pienas, 2,5 % rieb., 2 l",
+    "description": "DVARO pienas, 2,5 % rieb., 2 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.89,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/pienas/pasterizuotas-pienas/dvaro-pienas-2-5-rieb-2-l/p/258578"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_258578_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Natūralus DVARO pienas, 3,5 % rieb., 2 l",
+    "description": "Natūralus DVARO pienas, 3,5 % rieb., 2 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.99,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/pienas/pasterizuotas-pienas/naturalus-dvaro-pienas-3-5-rieb-2-l/p/258577"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_258577_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Kefyras VILVI, 2,5 % rieb., 1 kg",
+    "description": "Kefyras VILVI, 2,5 % rieb., 1 kg",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.45,
+        "oldPrice": 1.85,
+        "isOnSale": true,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/kefyras-rugpienis-ir-pasukos/kefyras/kefyras-vilvi-2-5-rieb-1-kg/p/297351"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_297351_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Pusriebė varškė RIMI SMART, 9 %, 180 g",
+    "description": "Pusriebė varškė RIMI SMART, 9 %, 180 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.75,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/varskes-produktai/varske/pusriebe-varske-rimi-smart-9-180-g/p/813691"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_813691_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Pjaustytas puskietis sūris DVARO, 50 %, 150 g",
+    "description": "Pjaustytas puskietis sūris DVARO, 50 %, 150 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.29,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/fermentiniai-suriai/pjaustytas-puskietis-suris-dvaro-50-150-g/p/228751"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_228751_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Fetos sūris OLYMPUS, 43 % rieb., 150 g",
+    "description": "Fetos sūris OLYMPUS, 43 % rieb., 150 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.59,
+        "oldPrice": 3.29,
+        "isOnSale": true,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/fetos-ir-mocarelos-suriai/fetos-suris-olympus-43-rieb-150-g/p/294376"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_294376_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "ROKIŠKIO sūris, 45 %, 240g",
+    "description": "ROKIŠKIO sūris, 45 %, 240g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.85,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/fermentiniai-suriai/rokiskio-suris-45-240g/p/277654"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_277654_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Mocarelos sūris FORMAGIA 125g",
+    "description": "Mocarelos sūris FORMAGIA 125g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.29,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/fetos-ir-mocarelos-suriai/mocarelos-suris-formagia-125g/p/292575"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_292575_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Plėšomos sūrio dešrelės PIK-NIK, 40%, 160g",
+    "description": "Plėšomos sūrio dešrelės PIK-NIK, 40%, 160g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.99,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/surio-uzkandziai-ir-lazdeles/plesomos-surio-desreles-pik-nik-40-160g/p/121444"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_121444_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "ROKIŠKIO NAMINIS pienas 2,5 %, 1 l",
+    "description": "ROKIŠKIO NAMINIS pienas 2,5 %, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.49,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/pienas/pasterizuotas-pienas/rokiskio-naminis-pienas-2-5-1-l/p/4000040"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_4000040_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "ŽEMAITIJOS natūrali grietinė, 30 %, 400 g",
+    "description": "ŽEMAITIJOS natūrali grietinė, 30 %, 400 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.99,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/grietine-ir-grietinele/grietine-/zemaitijos-naturali-grietine-30-400-g/p/252185"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_252185_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Varškės sūrelis su šokolado gab. KARUMS, 45 g",
+    "description": "Varškės sūrelis su šokolado gab. KARUMS, 45 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.65,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/jogurtai-ir-desertai/glaistyti-varskes-sureliai/varskes-surelis-su-sokolado-gab-karums-45-g/p/269083"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_269083_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "ŽEMAITIJOS natūralus kefyras, 2,5 %, 900 g",
+    "description": "ŽEMAITIJOS natūralus kefyras, 2,5 %, 900 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.25,
+        "oldPrice": 1.59,
+        "isOnSale": true,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/kefyras-rugpienis-ir-pasukos/kefyras/zemaitijos-naturalus-kefyras-2-5-900-g/p/909451"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_909451_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Kiet. sūris DŽIUGAS, 40% rieb., 100g (tark.)",
+    "description": "Kiet. sūris DŽIUGAS, 40% rieb., 100g (tark.)",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.19,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/tarkuotas-suris/kiet-suris-dziugas-40-rieb-100g-tark-/p/216768"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_216768_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ekol. nat. jogurtas DOBILAS, 2,3-4,6 %, 125 g",
+    "description": "Ekol. nat. jogurtas DOBILAS, 2,3-4,6 %, 125 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.09,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/jogurtai-ir-desertai/jogurtai-be-pagardu/ekol-nat-jogurtas-dobilas-2-3-4-6-125-g/p/261891"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_261891_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ekol. pusrieb. varškė DOBILAS, 9 %, 330 g",
+    "description": "Ekol. pusrieb. varškė DOBILAS, 9 %, 330 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.19,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/varskes-produktai/varske/ekol-pusrieb-varske-dobilas-9-330-g/p/286974"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_286974_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Gr. nat. jogurtas GRAIKIŠKA AMFORA, 3,9%,200g",
+    "description": "Gr. nat. jogurtas GRAIKIŠKA AMFORA, 3,9%,200g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.59,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/jogurtai-ir-desertai/jogurtai-be-pagardu/gr-nat-jogurtas-graikiska-amfora-3-9-200g/p/927780"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_927780_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Graikiškas jogurtas be priedų RIMI, 400 g",
+    "description": "Graikiškas jogurtas be priedų RIMI, 400 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.52,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/jogurtai-ir-desertai/jogurtai-be-pagardu/graikiskas-jogurtas-be-priedu-rimi-400-g/p/808085"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_1.0,f_webp,q_auto:low,w_200/d_ecommerce:backend-fallback.png/MAT_808085_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ekologiškas jogurtas DOBILAS, 2,3-4,6 %, 300g",
+    "description": "Ekologiškas jogurtas DOBILAS, 2,3-4,6 %, 300g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.19,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/jogurtai-ir-desertai/jogurtai-be-pagardu/ekologiskas-jogurtas-dobilas-2-3-4-6-300g/p/278494"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_278494_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Puskietis sūris DVARO, 50 % rieb., 240 g",
+    "description": "Puskietis sūris DVARO, 50 % rieb., 240 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.19,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/fermentiniai-suriai/puskietis-suris-dvaro-50-rieb-240-g/p/257507"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_257507_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "DVARO grietinė, 30 % rieb., 380 g",
+    "description": "DVARO grietinė, 30 % rieb., 380 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.69,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/grietine-ir-grietinele/grietine-/dvaro-grietine-30-rieb-380-g/p/276565"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_276565_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Vištų kiauš. RIMI SMART, A/M, Nr.2, 10 vnt.",
+    "description": "Vištų kiauš. RIMI SMART, A/M, Nr.2, 10 vnt.",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.19,
+        "isOnSale": false,
+        "measurementUnit": "vnt.",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/kiausiniai/2---ant-kraiko-laikomu-vistu-kiausiniai-/vistu-kiaus-rimi-smart-a-m-nr-2-10-vnt-/p/816707"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_816707_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Pienas RIMI SMART, (UHT) 3,2 %, 1 l",
+    "description": "Pienas RIMI SMART, (UHT) 3,2 %, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.95,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/pienas/ilgo-galiojimo-pienas/pienas-rimi-smart-uht-3-2-1-l/p/818390"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_818390_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "ŽEMAITIJOS varškė, 9 % rieb., 1 kg",
+    "description": "ŽEMAITIJOS varškė, 9 % rieb., 1 kg",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 6.49,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/varskes-produktai/varske/zemaitijos-varske-9-rieb-1-kg/p/286131"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_286131_KGM_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Sūris RIMI SMART TILSIT 45%, 250 g",
+    "description": "Sūris RIMI SMART TILSIT 45%, 250 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.19,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/fermentiniai-suriai/suris-rimi-smart-tilsit-45-250-g/p/812217"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_812217_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "DVARO kefyras, 2,5 % rieb., 0,9 kg",
+    "description": "DVARO kefyras, 2,5 % rieb., 0,9 kg",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.59,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/kefyras-rugpienis-ir-pasukos/kefyras/dvaro-kefyras-2-5-rieb-0-9-kg/p/918683"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_918683_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Eko. UAT pienas be lakt. AUGA, 2,5% rieb, 1 l",
+    "description": "Eko. UAT pienas be lakt. AUGA, 2,5% rieb, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.89,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/pienas/pasterizuotas-pienas/eko-uat-pienas-be-lakt-auga-2-5-rieb-1-l/p/4000472"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_4000472_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Ekol. kiaušiniai AUGA, A kl., 6 vnt., M dydis",
+    "description": "Ekol. kiaušiniai AUGA, A kl., 6 vnt., M dydis",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.99,
+        "isOnSale": false,
+        "measurementUnit": "vnt.",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/kiausiniai/0---ekologiski-kiausiniai/ekol-kiausiniai-auga-a-kl-6-vnt-m-dydis/p/940716"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_940716_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Plėšomos sūrio lazdelės MIAU, 40% rieb., 100g",
+    "description": "Plėšomos sūrio lazdelės MIAU, 40% rieb., 100g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.59,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/surio-uzkandziai-ir-lazdeles/plesomos-surio-lazdeles-miau-40-rieb-100g/p/278943"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_278943_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Grūdėta varškė su grietinėle 3% RIMI, 500G",
+    "description": "Grūdėta varškė su grietinėle 3% RIMI, 500G",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.79,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/varskes-produktai/grudeta-varske/grudeta-varske-su-grietinele-3-rimi-500g/p/804887"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_804887_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Varškė GRAIKIŠKA AMFORA PROTEIN, 0,9 %,200g",
+    "description": "Varškė GRAIKIŠKA AMFORA PROTEIN, 0,9 %,200g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.65,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/jogurtai-ir-desertai/desertai/varske-graikiska-amfora-protein-0-9-200g/p/949228"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_949228_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Grūdėta varškė PIENO ŽVAIGŽDĖS, 7%, 350g",
+    "description": "Grūdėta varškė PIENO ŽVAIGŽDĖS, 7%, 350g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.89,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/varskes-produktai/grudeta-varske/grudeta-varske-pieno-zvaigzdes-7-350g/p/904617"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_904617_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Sviestas RIMI, 82% riebumo, 200 g",
+    "description": "Sviestas RIMI, 82% riebumo, 200 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.05,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/sviestas/sviestas/sviestas-rimi-82-riebumo-200-g/p/817284"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_817284_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Majonezas HELLMANN'S ORIGINAL, 855 ml",
+    "description": "Majonezas HELLMANN'S ORIGINAL, 855 ml",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 7.49,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/majonezas-/majonezas/majonezas-hellmann-s-original-855-ml/p/979314"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_979314_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Graikiškas jogurtas ALMA, 4 % rieb., 370 g",
+    "description": "Graikiškas jogurtas ALMA, 4 % rieb., 370 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.79,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/jogurtai-ir-desertai/jogurtai-be-pagardu/graikiskas-jogurtas-alma-4-rieb-370-g/p/917033"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_917033_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Gl.varšk.sūrelis van.sk.VILK.LESS SUGAR, 40 g",
+    "description": "Gl.varšk.sūrelis van.sk.VILK.LESS SUGAR, 40 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.59,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/jogurtai-ir-desertai/glaistyti-varskes-sureliai/gl-varsk-surelis-van-sk-vilk-less-sugar-40-g/p/950603"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_950603_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Liesa varškė VILVI, 0,5 % rieb., 180 g",
+    "description": "Liesa varškė VILVI, 0,5 % rieb., 180 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.89,
+        "oldPrice": 1.15,
+        "isOnSale": true,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/varskes-produktai/varske/liesa-varske-vilvi-0-5-rieb-180-g/p/276597"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_276597_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Sūris salotoms RIMI, 40% rieb., 200g",
+    "description": "Sūris salotoms RIMI, 40% rieb., 200g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.49,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/fetos-ir-mocarelos-suriai/suris-salotoms-rimi-40-rieb-200g/p/808783"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_808783_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Majonezas HELLMANN'S ORIGINAL, 405 ml",
+    "description": "Majonezas HELLMANN'S ORIGINAL, 405 ml",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.99,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/majonezas-/majonezas/majonezas-hellmann-s-original-405-ml/p/979303"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_979303_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Pienas RIMI SMART,  2,5 %, 1 l",
+    "description": "Pienas RIMI SMART,  2,5 %, 1 l",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.58,
+        "isOnSale": false,
+        "measurementUnit": "l",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/pienas/pasterizuotas-pienas/pienas-rimi-smart-2-5-1-l/p/814150"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_814150_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Švž. sūrio gam. PHILADELPHIA ORIGINAL, 200 g",
+    "description": "Švž. sūrio gam. PHILADELPHIA ORIGINAL, 200 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.99,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/tepamieji-suriai/svz-surio-gam-philadelphia-original-200-g/p/212051"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_212051_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Maskarp. sk. varšk. sūrelis MURR, 28,6%, 40 g",
+    "description": "Maskarp. sk. varšk. sūrelis MURR, 28,6%, 40 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.59,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/jogurtai-ir-desertai/glaistyti-varskes-sureliai/maskarp-sk-varsk-surelis-murr-28-6-40-g/p/908821"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_908821_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "DVARO ster. grietinėlė kavai, 10 %, 250 ml",
+    "description": "DVARO ster. grietinėlė kavai, 10 %, 250 ml",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 2.19,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/grietine-ir-grietinele/grietinele/dvaro-ster-grietinele-kavai-10-250-ml/p/937451"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_937451_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Tarkuotas sūris RIMI GOUDA, 48 % rieb., 150 g",
+    "description": "Tarkuotas sūris RIMI GOUDA, 48 % rieb., 150 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.79,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/tarkuotas-suris/tarkuotas-suris-rimi-gouda-48-rieb-150-g/p/801832"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_801832_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "VILVI varšk. užtepėlė su žal., 18 %, 150 g",
+    "description": "VILVI varšk. užtepėlė su žal., 18 %, 150 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.59,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/tepamieji-suriai/vilvi-varsk-uztepele-su-zal-18-150-g/p/291496"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_291496_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Varškės sūrelis su kokosais KARUMS, 45 g",
+    "description": "Varškės sūrelis su kokosais KARUMS, 45 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.65,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/jogurtai-ir-desertai/glaistyti-varskes-sureliai/varskes-surelis-su-kokosais-karums-45-g/p/269071"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_269071_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "DVARO grietinė, 30 % rieb., 500 g",
+    "description": "DVARO grietinė, 30 % rieb., 500 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.09,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/grietine-ir-grietinele/grietine-/dvaro-grietine-30-rieb-500-g/p/248927"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_248927_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Natūralus ŽEMAITIJOS kefyras, 2,5 %, 500 g",
+    "description": "Natūralus ŽEMAITIJOS kefyras, 2,5 %, 500 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 0.87,
+        "oldPrice": 1.09,
+        "isOnSale": true,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/kefyras-rugpienis-ir-pasukos/kefyras/naturalus-zemaitijos-kefyras-2-5-500-g/p/249119"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_249119_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Liesa DVARO varškė, 400 g",
+    "description": "Liesa DVARO varškė, 400 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 3.59,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/varskes-produktai/varske/liesa-dvaro-varske-400-g/p/295116"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_295116_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "ŽEMAITIJOS grietinė, 30 % rieb., 200 g",
+    "description": "ŽEMAITIJOS grietinė, 30 % rieb., 200 g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 1.69,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/grietine-ir-grietinele/grietine-/zemaitijos-grietine-30-rieb-200-g/p/148580"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_148580_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "Plėš. sūrio lazdelės PIK-NIK, 40% rieb., 280g",
+    "description": "Plėš. sūrio lazdelės PIK-NIK, 40% rieb., 280g",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 5.29,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/suris/surio-uzkandziai-ir-lazdeles/ples-surio-lazdeles-pik-nik-40-rieb-280g/p/249144"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_249144_PCE_LT"
+  },
+  {
+    "id": "rimi-aHR0cHM6Ly93d3cucmlt",
+    "name": "DVARO steril. plakamoji grietinėlė, 35%,450ml",
+    "description": "DVARO steril. plakamoji grietinėlė, 35%,450ml",
+    "prices": [
+      {
+        "store": "RIMI",
+        "price": 4.79,
+        "isOnSale": false,
+        "measurementUnit": "kg",
+        "url": "https://www.rimi.lt/e-parduotuve/lt/produktai/pieno-produktai-ir-kiausiniai/grietine-ir-grietinele/grietinele/dvaro-steril-plakamoji-grietinele-35-450ml/p/937439"
+      }
+    ],
+    "imageUrl": "https://rimibaltic-res.cloudinary.com/image/upload/b_white,c_limit,dpr_auto,f_webp,h_216,q_1,w_216/d_ecommerce:backend-fallback.png/MAT_937439_PCE_LT"
+  }
+]

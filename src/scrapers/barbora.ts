@@ -2,88 +2,120 @@ import { chromium } from "playwright-extra";
 import stealthPlugin from "puppeteer-extra-plugin-stealth";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 import { Product, StorePrices } from "../types/products";
 
 chromium.use(stealthPlugin());
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const CATEGORIES = [
+    "https://barbora.lt/darzoves-ir-vaisiai",
+    "https://barbora.lt/pieno-gaminiai-kiausiniai-ir-majonezas",
+    "https://barbora.lt/duonos-gaminiai-ir-konditerija",
+    "https://barbora.lt/mesa-zuvis-ir-kulinarija",
+    "https://barbora.lt/bakaleja",
+    "https://barbora.lt/saldytas-maistas",
+    "https://barbora.lt/gerimai",
+    "https://barbora.lt/kudikiu-ir-vaiku-prekes",
+    "https://barbora.lt/kosmetika-ir-higiena",
+    "https://barbora.lt/svaros-ir-gyvunu-prekes",
+    "https://barbora.lt/namai-ir-laisvalaikis",
+];
+
+const randomDelay = (min: number, max: number) => 
+    new Promise(resolve => setTimeout(resolve, Math.floor(Math.random() * (max - min + 1)) + min));
+
 (async () => {
-    console.log("🚀 Paleidžiama stealth naršyklė...");
+    console.log("🚀 Paleidžiama maksimaliai optimizuota Barbora naršyklė...");
 
     const browser = await chromium.launch({
-        headless: false,
+        headless: true,
     });
 
     const context = await browser.newContext({
         viewport: { width: 1440, height: 900 },
-        userAgent:
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+        userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
         locale: "lt-LT",
     });
 
     const page = await context.newPage();
 
-    const baseUrl = "https://barbora.lt/darzoves-ir-vaisiai";
-    let currentPage = 1;
-    let allProducts: Product[] = [];
-    const visitedUrls = new Set<string>();
-
-    console.log(`🌐 Naviguojama į kategoriją: ${baseUrl}`);
-    try {
-        await page.goto(baseUrl, { waitUntil: "domcontentloaded", timeout: 60000 });
-    } catch (e) { }
-
-    await page.waitForTimeout(2000);
-    try {
-        const cookieBtn = page.locator("#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll");
-        if (await cookieBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
-            await cookieBtn.click({ force: true }).catch(() => { });
-            console.log("✅ Slapukai patvirtinti.");
+    await page.route("**/*", (route) => {
+        const resourceType = route.request().resourceType();
+        if (["image", "stylesheet", "font", "media"].includes(resourceType)) {
+            route.abort();
+        } else {
+            route.continue();
         }
-    } catch (e) { }
+    });
 
-    while (true) {
-        if (page.isClosed()) {
-            console.log("⚠️ Puslapis buvo uždarytas, baigiamas skrapinimas.");
-            break;
+    const visitedUrls = new Set();
+    
+    const dataDir = path.join(__dirname, "data", "barbora");
+    if (!fs.existsSync(dataDir)) {
+        fs.mkdirSync(dataDir, { recursive: true });
+    }
+
+    for (const baseUrl of CATEGORIES) {
+        console.log("\n========================================");
+        console.log("🌐 Pradedama kategorija: " + baseUrl);
+        console.log("========================================");
+
+        let currentPage = 1;
+        let categoryProducts: Product[] = [];
+
+        let loaded = false;
+        for (let attempt = 1; attempt <= 3; attempt++) {
+            try {
+                await page.goto(baseUrl, { waitUntil: "domcontentloaded", timeout: 50000 });
+                loaded = true;
+                break;
+            } catch (e) {
+                console.log("⚠️ Bandymas " + attempt + "/3 nepavyko atidaryti " + baseUrl + ". Bandoma iš naujo...");
+                await randomDelay(2000, 3000);
+            }
         }
 
-        console.log(`\n📄 Apdorojamas puslapis nr. ${currentPage}...`);
+        if (!loaded) {
+            console.log("❌ Nepavyko pasiekti kategorijos per 3 kartus, praleidžiama.");
+            continue;
+        }
 
-        await page
-            .evaluate(() => {
-                const ids = ["CybotCookiebotDialog", "CybotCookiebotDialogBodyUnderlay"];
-                ids.forEach((id) => {
-                    const el = document.getElementById(id);
-                    if (el) el.remove();
-                });
-            })
-            .catch(() => { });
+        while (true) {
+            if (page.isClosed()) {
+                console.log("⚠️ Puslapis uždarytas.");
+                break;
+            }
 
-        // Švelnus skrolinimas, kad užsikrautų visi produktai (lazy load)
-        await page
-            .evaluate(async () => {
-                await new Promise<void>((resolve) => {
+            console.log("\n📄 Apdorojamas puslapis nr. " + currentPage + "...");
+
+            await page.evaluate(async () => {
+                await new Promise((resolve) => {
                     let totalHeight = 0;
-                    const distance = 400;
+                    const distance = 800;
                     const timer = setInterval(() => {
                         const scrollHeight = document.body.scrollHeight;
                         window.scrollBy(0, distance);
                         totalHeight += distance;
-
                         if (totalHeight >= scrollHeight - window.innerHeight) {
                             clearInterval(timer);
-                            resolve();
+                            resolve(undefined);
                         }
-                    }, 80);
+                    }, 40);
                 });
-            })
-            .catch(() => { });
+            }).catch(() => {});
 
-        await page.waitForTimeout(1000).catch(() => { });
-        await page.waitForSelector("li[data-testid^='product-card']", { timeout: 15000 }).catch(() => { });
+            await randomDelay(400, 800);
 
-        const rawItems = await page
-            .evaluate(() => {
+            const selectorLoaded = await page.waitForSelector("li[data-testid^='product-card']", { timeout: 12000 }).catch(() => false);
+            if (!selectorLoaded) {
+                console.log("⚠️ Produktų kortelės nepasikrovė arba puslapis tuščias. Baigiamas šios kategorijos skrapinimas.");
+                break;
+            }
+
+            const rawItems = await page.evaluate(() => {
                 const items: any[] = [];
                 const cardElements = Array.from(document.querySelectorAll("li[data-testid^='product-card']"));
 
@@ -98,129 +130,115 @@ chromium.use(stealthPlugin());
 
                     if (isOutOfStock) return;
 
-                    // Pasiimame JSON iš data-b-for-cart atributo
                     const placeholder = card.querySelector("div[data-b-for-cart]");
                     const rawJson = placeholder?.getAttribute("data-b-for-cart");
-
                     if (!rawJson) return;
 
                     try {
                         const data = JSON.parse(rawJson);
-
-                        if (data.status === "suspended" || !data.price || data.price <= 0) {
-                            return;
-                        }
+                        if (data.status === "suspended" || !data.price || data.price <= 0) return;
 
                         const currentPrice = Number(data.price);
-
-                        // Senosios kainos paieška
                         let oldPrice: number | undefined = undefined;
 
                         if (data.promotion?.oldPrice && Number(data.promotion.oldPrice) > currentPrice) {
                             oldPrice = Number(data.promotion.oldPrice);
                         } else if (data.retail_price && Number(data.retail_price) > currentPrice) {
                             oldPrice = Number(data.retail_price);
-                        } else {
-                            const crossedEl = card.querySelector(".text-neutral-500, .line-through, [class*='line-through']");
-                            if (crossedEl) {
-                                const txt = (crossedEl.textContent || "").replace(/[^0-9,.]/g, "").replace(",", ".");
-                                const parsedTxt = parseFloat(txt);
-                                if (!isNaN(parsedTxt) && parsedTxt > currentPrice) {
-                                    oldPrice = parsedTxt;
-                                }
-                            }
                         }
 
-                        const isOnSale = oldPrice !== undefined;
-
-                        // Tikrasis URL ištraukimas iš kortelėje esančios nuorodos arba JSON duomenų
                         const linkEl = card.querySelector("a[href*='/produktai/']") as HTMLAnchorElement;
                         let relativeUrl = linkEl ? linkEl.getAttribute("href") : "";
                         if (!relativeUrl && data.Url) {
-                            relativeUrl = `/produktai/${data.Url}`;
+                            relativeUrl = "/produktai/" + data.Url;
                         }
-                        const fullUrl = relativeUrl ? (relativeUrl.startsWith("http") ? relativeUrl : `https://barbora.lt${relativeUrl}`) : "";
+                        const fullUrl = relativeUrl ? (relativeUrl.startsWith("http") ? relativeUrl : "https://barbora.lt" + relativeUrl) : "";
 
                         items.push({
                             id: data.id || data.item_id,
                             title: data.title,
                             price: currentPrice,
                             oldPrice: oldPrice,
-                            isOnSale: isOnSale,
+                            isOnSale: oldPrice !== undefined,
                             unit: data.comparative_unit || "vnt.",
                             image: data.big_image || data.image || undefined,
                             fullUrl: fullUrl,
                         });
-                    } catch (e) { }
+                    } catch (e) {}
                 });
-
                 return items;
-            })
-            .catch(() => []);
+            }).catch(() => []);
 
-        let newItemsInPage = 0;
+            let newItemsInPage = 0;
 
-        for (const item of rawItems) {
-            if (item.fullUrl && !visitedUrls.has(item.fullUrl)) {
-                visitedUrls.add(item.fullUrl);
-                newItemsInPage++;
+            for (const item of rawItems) {
+                if (item.fullUrl && !visitedUrls.has(item.fullUrl)) {
+                    visitedUrls.add(item.fullUrl);
+                    newItemsInPage++;
 
-                const storePrice: StorePrices = {
-                    store: "MAXIMA",
-                    price: item.price,
-                    ...(item.oldPrice !== undefined && { oldPrice: item.oldPrice }),
-                    isOnSale: item.isOnSale,
-                    measurementUnit: item.unit,
-                };
+                    const storePrice: StorePrices = {
+                        store: "MAXIMA",
+                        price: item.price,
+                        ...(item.oldPrice !== undefined && { oldPrice: item.oldPrice }),
+                        isOnSale: item.isOnSale,
+                        measurementUnit: item.unit,
+                        url: item.fullUrl,
+                    };
 
-                const product: Product = {
-                    id: `barbora-${item.id}`,
-                    name: item.title,
-                    description: item.title,
-                    prices: [storePrice],
-                    imageUrl: item.image,
-                    url: item.fullUrl, // <-- Čia įrašomas produkto URL
-                };
+                    categoryProducts.push({
+                        id: "barbora-" + item.id,
+                        name: item.title,
+                        description: item.title,
+                        prices: [storePrice],
+                        imageUrl: item.image,
+                    });
+                }
+            }
 
-                allProducts.push(product);
+            console.log("🔎 Puslapyje rasta: " + rawItems.length + " | Naujų įtraukta: " + newItemsInPage);
+
+            if (newItemsInPage === 0 || rawItems.length === 0) {
+                console.log("🏁 Šioje kategorijoje daugiau puslapių nėra arba prekės baigėsi.");
+                break;
+            }
+
+            currentPage++;
+            const nextUrl = baseUrl + "?page=" + currentPage;
+            console.log("➡️ Einama į puslapį nr. " + currentPage + "...");
+
+            let nextLoaded = false;
+            for (let attempt = 1; attempt <= 3; attempt++) {
+                try {
+                    await page.goto(nextUrl, { waitUntil: "domcontentloaded", timeout: 50000 });
+                    await randomDelay(2000, 3500);
+                    
+                    const checkCards = await page.waitForSelector("li[data-testid^='product-card']", { timeout: 8000 }).catch(() => false);
+                    if (checkCards) {
+                        nextLoaded = true;
+                        break;
+                    }
+                } catch (e) {
+                    console.log("⚠️ Nepavyko atidaryti puslapio " + currentPage + " (bandymas " + attempt + "/3). Bandoma iš naujo...");
+                    await randomDelay(4000, 6000);
+                }
+            }
+
+            if (!nextLoaded) {
+                console.log("⚠️ Puslapio nepavyko pasiekti po 3 bandymų, baigiama ši kategorija.");
+                break;
             }
         }
 
-        console.log(
-            `🔎 Puslapyje nr. ${currentPage} rasta galiojančių produktų: ${rawItems.length} (Naujų pridėta: ${newItemsInPage})`
-        );
-
-        if (newItemsInPage === 0) {
-            console.log("🏁 Naujų galiojančių produktų nerasta, skrapinimas baigtas!");
-            break;
+        if (categoryProducts.length > 0) {
+            const catName = baseUrl.split("/").pop();
+            const catFilePath = path.join(dataDir, "barbora_" + catName + ".json");
+            fs.writeFileSync(catFilePath, JSON.stringify(categoryProducts, null, 2), "utf-8");
+            console.log("💾 Kategorijos duomenys išsaugoti į data/barbora/barbora_" + catName + ".json (Viso: " + categoryProducts.length + ")");
         }
-
-        currentPage++;
-        const nextUrl = `${baseUrl}?page=${currentPage}`;
-        console.log(`➡️ Einama į puslapį nr. ${currentPage}: ${nextUrl}`);
-
-        try {
-            await page.goto(nextUrl, { waitUntil: "domcontentloaded", timeout: 30000 });
-            await page.waitForTimeout(1500);
-        } catch (e) {
-            console.log("⚠️ Nepavyko užkrauti kito puslapio, baigiama.");
-            break;
-        }
-    }
-
-    if (allProducts.length > 0) {
-        const dataDir = path.resolve(process.cwd(), "data");
-        if (!fs.existsSync(dataDir)) {
-            fs.mkdirSync(dataDir, { recursive: true });
-        }
-
-        const filePath = path.join(dataDir, "barbora.json");
-        fs.writeFileSync(filePath, JSON.stringify(allProducts, null, 2), "utf-8");
-
-        console.log(`\n🎉 VISO išsaugota ${allProducts.length} produktų į:\n${filePath}`);
     }
 
     if (!page.isClosed()) {
-        await browser.close().catch(() => { });
+        await browser.close().catch(() => {});
     }
+    console.log("\n🎉 Visų kategorijų skrapinimas baigtas! Iš viso unikalių prekių: " + visitedUrls.size);
 })();
