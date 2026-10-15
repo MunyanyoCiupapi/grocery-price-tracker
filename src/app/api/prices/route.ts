@@ -1,70 +1,153 @@
+
 import { NextResponse } from "next/server";
-import { Product, StorePrices } from "@/types/products";
+import type { Product, StorePrices } from "@/types/products";
 import fs from "fs";
 import path from "path";
 
 let cachedProducts: Product[] | null = null;
 let lastCacheTime = 0;
-const CACHE_TTL = 1000 * 60 * 15; // 15 minučių
+
+const CACHE_TTL = 1000 * 60 * 15;
+
+// Pašalinami tik požymiai, kurie paprastai nereiškia kito produkto.
+function normalizeProductName(name: string): string {
+    let value = String(name ?? "")
+        .normalize("NFC")
+        .toLocaleLowerCase("lt-LT")
+        .replace(/&nbsp;|&#x20;|&#x20/gi, " ")
+        .replace(/&#x27;|&#39;/gi, "'")
+        .replace(/&amp;/gi, "&");
+
+    // Žinomų to paties produkto pavadinimų variantai.
+    // Monster Ultra White ir Monster Zero Ultra – tas pats gėrimas.
+    value = value
+        .replace(/\bmonster\s+ultra\s+white\b/gi, "monster zero ultra")
+        .replace(/\bmonster\s+white\s+ultra\b/gi, "monster zero ultra");
+
+    // Pašaliname kilmės informaciją, kai ji įrašyta pavadinime.
+    value = value.replace(
+        /\b(kilmės šalis|ispanija|lenkija|lietuva|italija|olandija|belgija|estija|latvija)\b/gi,
+        " "
+    );
+
+    // Pašaliname dydžius, pvz. 75-85 mm, 75 x 85 mm.
+    value = value.replace(
+        /\b\d+(?:[.,]\d+)?\s*(?:-|–|—|x|×)\s*\d+(?:[.,]\d+)?\s*(?:mm|cm|m)\b/gi,
+        " "
+    );
+
+    // Pašaliname kiekius: 1 kg, 500 ml, 1,5 l, 300 g ir pan.
+    value = value.replace(
+        /\b\d+(?:[.,]\d+)?\s*(?:kg|g|mg|ml|cl|l|lit(?:rų|rai|ras)?|vnt\.?|vienet(?:ų|ai)?)\b/gi,
+        " "
+    );
+
+    // Pašaliname papildomus pakuotės kiekių užrašus: 6 x 500 ml.
+    value = value.replace(
+        /\b\d+\s*(?:vnt\.?|vnt|x|×|pak\.)\b/gi,
+        " "
+    );
+
+    // Kai kurie pardavėjai prideda reklaminę informaciją.
+    value = value.replace(
+        /\b(?:akcija|speciali kaina|riboto leidimo)\b/gi,
+        " "
+    );
+
+    // Suvienodiname skyrybą ir tarpus, bet paliekame lietuviškas raides.
+    value = value
+        .replace(/[^\p{L}\p{N}\s]/gu, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    return value;
+}
 
 function loadAndAggregateProducts(): Product[] {
-    const dataDir = path.join(process.cwd(), "src", "scrapers", "data");
-    if (!fs.existsSync(dataDir)) return [];
+    const dataDir = path.join(
+        process.cwd(),
+        "src",
+        "scrapers",
+        "data"
+    );
+
+    if (!fs.existsSync(dataDir)) {
+        console.warn("Produktų katalogas nerastas:", dataDir);
+        return [];
+    }
 
     const getJsonFiles = (dir: string): string[] => {
-        let results: string[] = [];
-        const list = fs.readdirSync(dir, { withFileTypes: true });
-        for (const file of list) {
-            const resPath = path.join(dir, file.name);
+        const results: string[] = [];
+
+        for (const file of fs.readdirSync(dir, { withFileTypes: true })) {
+            const fullPath = path.join(dir, file.name);
+
             if (file.isDirectory()) {
-                results = results.concat(getJsonFiles(resPath));
-            } else if (file.name.endsWith(".json")) {
-                results.push(resPath);
+                results.push(...getJsonFiles(fullPath));
+            } else if (file.isFile() && file.name.endsWith(".json")) {
+                results.push(fullPath);
             }
         }
+
         return results;
     };
 
-    const files = getJsonFiles(dataDir);
-    const productMap = new Map();
+    const productMap = new Map<string, Product>();
     let counter = 1;
 
-    for (const filePath of files) {
+    for (const filePath of getJsonFiles(dataDir)) {
         try {
-            const fileContent = fs.readFileSync(filePath, "utf-8");
-            const products: Product[] = JSON.parse(fileContent);
+            const content = fs.readFileSync(filePath, "utf-8");
+            const parsed: unknown = JSON.parse(content);
+
+            if (!Array.isArray(parsed)) {
+                console.warn("Praleistas netinkamas JSON:", filePath);
+                continue;
+            }
+
+            const products = parsed as Product[];
 
             for (const p of products) {
-                let normalizedKey = p.name
-                    .toLowerCase()
-                    .replace(/\b(kilmės šalis|ispanija|lenkija|lietuva|italija|olandija|belgija|estija|latvija)\b/gi, "")
-                    .replace(/\b(traškūs|bulvių|bulv|krekeriai|gimtoji|gaminys|sūrio|skonio)\b/gi, "")
-                    .replace(/\d+\s*(g|kg|ml|l|vnt\.?)\b/gi, "")
-                    .replace(/[^\wąčęėįšųūž\s]/gi, "")
-                    .replace(/\s+/g, " ")
-                    .trim();
-
-                if (normalizedKey.length < 3) {
-                    normalizedKey = p.name.toLowerCase().trim();
+                if (
+                    !p ||
+                    typeof p.name !== "string" ||
+                    !p.name.trim() ||
+                    !Array.isArray(p.prices)
+                ) {
+                    continue;
                 }
 
-                if (productMap.has(normalizedKey)) {
-                    const existing = productMap.get(normalizedKey)!;
+                const normalizedKey = normalizeProductName(p.name);
+
+                // Per trumpi pavadinimai pernelyg nepatikimi sutapatinimui.
+                const key =
+                    normalizedKey.length >= 3
+                        ? normalizedKey
+                        : `original:${p.name.toLocaleLowerCase("lt-LT").trim()}`;
+
+                const existing = productMap.get(key);
+
+                if (existing) {
                     for (const newPrice of p.prices) {
-                        if (!existing.prices.some((sp: StorePrices) => sp.store === newPrice.store)) {
+                        const sameStore = existing.prices.some(
+                            (price: StorePrices) =>
+                                price.store === newPrice.store
+                        );
+
+                        if (!sameStore) {
                             existing.prices.push(newPrice);
                         }
                     }
                 } else {
-                    const uniqueId = `prod-${counter++}`;
-                    productMap.set(normalizedKey, {
+                    productMap.set(key, {
                         ...p,
-                        id: uniqueId,
+                        id: `prod-${counter++}`,
+                        prices: [...p.prices],
                     });
                 }
             }
-        } catch (e) {
-            console.error(`Klaida skaitant failą ${filePath}:`, e);
+        } catch (error) {
+            console.error(`Klaida skaitant failą ${filePath}:`, error);
         }
     }
 
@@ -74,31 +157,49 @@ function loadAndAggregateProducts(): Product[] {
 export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
-        const page = parseInt(searchParams.get("page") || "1", 10);
-        const limit = parseInt(searchParams.get("limit") || "24", 10);
-        const search = searchParams.get("q")?.toLowerCase().trim() || "";
+
+        const rawPage = Number(searchParams.get("page") ?? 1);
+        const rawLimit = Number(searchParams.get("limit") ?? 24);
+
+        const page = Number.isFinite(rawPage)
+            ? Math.max(1, Math.floor(rawPage))
+            : 1;
+
+        const limit = Number.isFinite(rawLimit)
+            ? Math.min(100, Math.max(1, Math.floor(rawLimit)))
+            : 24;
+
+        const search = (searchParams.get("q") ?? "")
+            .toLocaleLowerCase("lt-LT")
+            .trim();
 
         const now = Date.now();
+
         if (!cachedProducts || now - lastCacheTime > CACHE_TTL) {
             cachedProducts = loadAndAggregateProducts();
             lastCacheTime = now;
         }
 
-        let filtered = cachedProducts;
-        if (search) {
-            filtered = cachedProducts.filter((p) =>
-                p.name.toLowerCase().includes(search)
-            );
-        }
+        const filtered = search
+            ? cachedProducts.filter((product) =>
+                  product.name
+                      .toLocaleLowerCase("lt-LT")
+                      .includes(search)
+              )
+            : cachedProducts;
 
         const total = filtered.length;
         const totalPages = Math.ceil(total / limit);
         const startIndex = (page - 1) * limit;
-        const paginatedProducts = filtered.slice(startIndex, startIndex + limit);
+
+        const products = filtered.slice(
+            startIndex,
+            startIndex + limit
+        );
 
         return NextResponse.json(
             {
-                products: paginatedProducts,
+                products,
                 pagination: {
                     total,
                     page,
@@ -106,10 +207,16 @@ export async function GET(request: Request) {
                     limit,
                 },
             },
-            { status: 200 }
+            {
+                status: 200,
+                headers: {
+                    "Cache-Control": "no-store",
+                },
+            }
         );
     } catch (error) {
         console.error("Klaida skaitant prekių duomenis:", error);
+
         return NextResponse.json(
             { error: "Nepavyko užkrauti produktų" },
             { status: 500 }
