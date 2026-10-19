@@ -1,6 +1,7 @@
 import { chromium } from "playwright-extra";
 import stealthPlugin from "puppeteer-extra-plugin-stealth";
 import type { Page } from "playwright";
+import { createHash } from "node:crypto";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -79,6 +80,19 @@ function categorySlugFromUrl(baseUrl: string): string {
             .filter(Boolean)
             .join("_") || "kategorija"
     );
+}
+
+function normalizeProductUrl(rawUrl: string): string {
+    const url = new URL(rawUrl, "https://www.rimi.lt");
+    url.hash = "";
+    url.search = "";
+    return url.href.replace(/\/+$/, "");
+}
+
+function makeProductId(productUrl: string): string {
+    const normalizedUrl = normalizeProductUrl(productUrl);
+    const hash = createHash("sha256").update(normalizedUrl).digest("hex");
+    return `rimi-${hash}`;
 }
 
 async function extractItems(page: Page) {
@@ -257,7 +271,7 @@ async function scrollToBottom(page: Page) {
                             url: item.fullUrl,
                         };
 
-                        const productId = "rimi-" + Buffer.from(item.fullUrl).toString("base64").replace(/[/+=]/g, "").substring(0, 20);
+                        const productId = makeProductId(item.fullUrl);
 
                         categoryProducts.push({
                             id: productId,
@@ -302,7 +316,6 @@ async function scrollToBottom(page: Page) {
 
                 currentPage++;
 
-                // Laukiam, kol pasikeis pirma prekė (naujas puslapis), vietoj fiksuoto miego.
                 const changed = await page
                     .waitForFunction(
                         (prev: string) => {
@@ -316,7 +329,7 @@ async function scrollToBottom(page: Page) {
                     .catch(() => false);
 
                 if (changed) await randomDelay(300, 700);
-                else await randomDelay(2500, 3500); // atsarginis variantas
+                else await randomDelay(2500, 3500);
             }
         } finally {
             if (!page.isClosed()) await page.close().catch(() => {});

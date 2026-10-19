@@ -1,225 +1,122 @@
-
 import { NextResponse } from "next/server";
 import type { Product, StorePrices } from "@/types/products";
-import fs from "fs";
-import path from "path";
+import { getPool } from "@/lib/db";
+import { normalizeSearchText } from "@/lib/groupKey";
 
-let cachedProducts: Product[] | null = null;
-let lastCacheTime = 0;
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-const CACHE_TTL = 1000 * 60 * 15;
+// Prekės, kurių nematėme ilgiau nei tiek dienų, nerodomos.
+const FRESH_DAYS = 5;
+const MAX_LIMIT = 100;
+const MAX_TERMS = 6;
 
-// Pašalinami tik požymiai, kurie paprastai nereiškia kito produkto.
-function normalizeProductName(name: string): string {
-    let value = String(name ?? "")
-        .normalize("NFC")
-        .toLocaleLowerCase("lt-LT")
-        .replace(/&nbsp;|&#x20;|&#x20/gi, " ")
-        .replace(/&#x27;|&#39;/gi, "'")
-        .replace(/&amp;/gi, "&");
-
-    // Žinomų to paties produkto pavadinimų variantai.
-    // Monster Ultra White ir Monster Zero Ultra – tas pats gėrimas.
-    value = value
-        .replace(/\bmonster\s+ultra\s+white\b/gi, "monster zero ultra")
-        .replace(/\bmonster\s+white\s+ultra\b/gi, "monster zero ultra");
-
-    // Pašaliname kilmės informaciją, kai ji įrašyta pavadinime.
-    value = value.replace(
-        /\b(kilmės šalis|ispanija|lenkija|lietuva|italija|olandija|belgija|estija|latvija)\b/gi,
-        " "
-    );
-
-    // Pašaliname dydžius, pvz. 75-85 mm, 75 x 85 mm.
-    value = value.replace(
-        /\b\d+(?:[.,]\d+)?\s*(?:-|–|—|x|×)\s*\d+(?:[.,]\d+)?\s*(?:mm|cm|m)\b/gi,
-        " "
-    );
-
-    // Pašaliname kiekius: 1 kg, 500 ml, 1,5 l, 300 g ir pan.
-    value = value.replace(
-        /\b\d+(?:[.,]\d+)?\s*(?:kg|g|mg|ml|cl|l|lit(?:rų|rai|ras)?|vnt\.?|vienet(?:ų|ai)?)\b/gi,
-        " "
-    );
-
-    // Pašaliname papildomus pakuotės kiekių užrašus: 6 x 500 ml.
-    value = value.replace(
-        /\b\d+\s*(?:vnt\.?|vnt|x|×|pak\.)\b/gi,
-        " "
-    );
-
-    // Kai kurie pardavėjai prideda reklaminę informaciją.
-    value = value.replace(
-        /\b(?:akcija|speciali kaina|riboto leidimo)\b/gi,
-        " "
-    );
-
-    // Suvienodiname skyrybą ir tarpus, bet paliekame lietuviškas raides.
-    value = value
-        .replace(/[^\p{L}\p{N}\s]/gu, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-
-    return value;
+interface DbItem {
+    id: string;
+    name: string;
+    store: StorePrices["store"];
+    price: number;
+    oldPrice: number | null;
+    isOnSale: boolean;
+    unit: string | null;
+    url: string;
+    imageUrl: string | null;
 }
 
-function loadAndAggregateProducts(): Product[] {
-    const dataDir = path.join(
-        process.cwd(),
-        "src",
-        "scrapers",
-        "data"
-    );
+interface GroupRow {
+    group_key: string;
+    total: string;
+    stores: string;
+    items: DbItem[];
+}
 
-    if (!fs.existsSync(dataDir)) {
-        console.warn("Produktų katalogas nerastas:", dataDir);
-        return [];
-    }
+function escapeLike(term: string): string {
+    return term.replace(/[\\%_]/g, (c) => "\\" + c);
+}
 
-    const getJsonFiles = (dir: string): string[] => {
-        const results: string[] = [];
+function toProduct(row: GroupRow): Product {
+    const items = row.items; // jau surikiuotos pagal kainą (pigiausia pirma)
+    const first = items[0];
 
-        for (const file of fs.readdirSync(dir, { withFileTypes: true })) {
-            const fullPath = path.join(dir, file.name);
+    const prices: StorePrices[] = items.map((it) => ({
+        store: it.store,
+        price: Number(it.price),
+        ...(it.oldPrice !== null && { oldPrice: Number(it.oldPrice) }),
+        isOnSale: it.isOnSale,
+        ...(it.unit && { measurementUnit: it.unit }),
+        url: it.url,
+    }));
 
-            if (file.isDirectory()) {
-                results.push(...getJsonFiles(fullPath));
-            } else if (file.isFile() && file.name.endsWith(".json")) {
-                results.push(fullPath);
-            }
-        }
-
-        return results;
+    return {
+        id: first.id,
+        name: first.name,
+        description: first.name,
+        prices,
+        imageUrl: items.find((it) => it.imageUrl)?.imageUrl ?? undefined,
     };
-
-    const productMap = new Map<string, Product>();
-    let counter = 1;
-
-    for (const filePath of getJsonFiles(dataDir)) {
-        try {
-            const content = fs.readFileSync(filePath, "utf-8");
-            const parsed: unknown = JSON.parse(content);
-
-            if (!Array.isArray(parsed)) {
-                console.warn("Praleistas netinkamas JSON:", filePath);
-                continue;
-            }
-
-            const products = parsed as Product[];
-
-            for (const p of products) {
-                if (
-                    !p ||
-                    typeof p.name !== "string" ||
-                    !p.name.trim() ||
-                    !Array.isArray(p.prices)
-                ) {
-                    continue;
-                }
-
-                const normalizedKey = normalizeProductName(p.name);
-
-                // Per trumpi pavadinimai pernelyg nepatikimi sutapatinimui.
-                const key =
-                    normalizedKey.length >= 3
-                        ? normalizedKey
-                        : `original:${p.name.toLocaleLowerCase("lt-LT").trim()}`;
-
-                const existing = productMap.get(key);
-
-                if (existing) {
-                    for (const newPrice of p.prices) {
-                        const sameStore = existing.prices.some(
-                            (price: StorePrices) =>
-                                price.store === newPrice.store
-                        );
-
-                        if (!sameStore) {
-                            existing.prices.push(newPrice);
-                        }
-                    }
-                } else {
-                    productMap.set(key, {
-                        ...p,
-                        id: `prod-${counter++}`,
-                        prices: [...p.prices],
-                    });
-                }
-            }
-        } catch (error) {
-            console.error(`Klaida skaitant failą ${filePath}:`, error);
-        }
-    }
-
-    return Array.from(productMap.values());
 }
 
 export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
+        const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
+        const limit = Math.min(MAX_LIMIT, Math.max(1, parseInt(searchParams.get("limit") || "24", 10) || 24));
+        const search = normalizeSearchText(searchParams.get("q") || "");
+        const compareOnly = searchParams.get("compare") === "1"; // tik prekės, parduodamos ≥2 parduotuvėse
 
-        const rawPage = Number(searchParams.get("page") ?? 1);
-        const rawLimit = Number(searchParams.get("limit") ?? 24);
+        const terms = search.split(" ").filter(Boolean).slice(0, MAX_TERMS);
 
-        const page = Number.isFinite(rawPage)
-            ? Math.max(1, Math.floor(rawPage))
-            : 1;
+        const params: unknown[] = [];
+        const where: string[] = [`last_seen > now() - interval '${FRESH_DAYS} days'`];
 
-        const limit = Number.isFinite(rawLimit)
-            ? Math.min(100, Math.max(1, Math.floor(rawLimit)))
-            : 24;
-
-        const search = (searchParams.get("q") ?? "")
-            .toLocaleLowerCase("lt-LT")
-            .trim();
-
-        const now = Date.now();
-
-        if (!cachedProducts || now - lastCacheTime > CACHE_TTL) {
-            cachedProducts = loadAndAggregateProducts();
-            lastCacheTime = now;
+        for (const term of terms) {
+            params.push(`%${escapeLike(term)}%`);
+            where.push(`name_search ilike $${params.length}`);
         }
 
-        const filtered = search
-            ? cachedProducts.filter((product) =>
-                  product.name
-                      .toLocaleLowerCase("lt-LT")
-                      .includes(search)
-              )
-            : cachedProducts;
+        // rūšiavimas: pirmiausia prekės, esančios daugiau parduotuvių, tada tos, kurios prasideda ieškomu žodžiu
+        let startsWithOrder = "";
+        if (terms.length > 0) {
+            params.push(`${escapeLike(terms[0])}%`);
+            startsWithOrder = `bool_or(name_search like $${params.length}) desc, `;
+        }
 
-        const total = filtered.length;
+        params.push(limit, (page - 1) * limit);
+        const limitIdx = params.length - 1;
+        const offsetIdx = params.length;
+
+        const sql = `
+            select
+                group_key,
+                count(*) over() as total,
+                count(distinct store) as stores,
+                json_agg(json_build_object(
+                    'id', id, 'name', name, 'store', store, 'price', price,
+                    'oldPrice', old_price, 'isOnSale', is_on_sale, 'unit', unit,
+                    'url', url, 'imageUrl', image_url
+                ) order by price asc) as items
+            from public.store_products
+            where ${where.join(" and ")}
+            group by group_key
+            ${compareOnly ? "having count(distinct store) >= 2" : ""}
+            order by count(distinct store) desc, ${startsWithOrder}min(name_search) asc, group_key asc
+            limit $${limitIdx} offset $${offsetIdx}
+        `;
+
+        const { rows } = await getPool().query<GroupRow>(sql, params);
+
+        const total = rows.length > 0 ? Number(rows[0].total) : 0;
         const totalPages = Math.ceil(total / limit);
-        const startIndex = (page - 1) * limit;
-
-        const products = filtered.slice(
-            startIndex,
-            startIndex + limit
-        );
 
         return NextResponse.json(
             {
-                products,
-                pagination: {
-                    total,
-                    page,
-                    totalPages,
-                    limit,
-                },
+                products: rows.map(toProduct),
+                pagination: { total, page, totalPages, limit },
             },
-            {
-                status: 200,
-                headers: {
-                    "Cache-Control": "no-store",
-                },
-            }
+            { status: 200 },
         );
     } catch (error) {
         console.error("Klaida skaitant prekių duomenis:", error);
-
-        return NextResponse.json(
-            { error: "Nepavyko užkrauti produktų" },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: "Nepavyko užkrauti produktų" }, { status: 500 });
     }
 }
