@@ -14,6 +14,7 @@ export interface StorePrices {
     oldPrice?: number;
     isOnSale?: boolean;
     measurementUnit?: string;
+    url: string;
 };
 
 export interface Basket {
