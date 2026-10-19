@@ -1,0 +1,33 @@
+name: Automatinis Kainų Atnaujinimas
+
+on:
+  schedule:
+    # Paleidžiam kasdien 03:00 val. nakties
+    - cron: '0 3 * * *'
+  workflow_dispatch: 
+jobs:
+  scrape-and-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Atsisiųsti kodą
+        uses: actions/checkout@v4
+
+      - name: Įdiegti Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Įdiegti priklausomybes
+        run: npm install
+
+      - name: Įdiegti Playwright naršykles
+        run: npx playwright install --with-deps
+
+      - name: Paleisti visus skraperius
+        run: npx tsx src/scrapers/run-all.ts
+
+      - name: Sinchronizuoti su Supabase
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: npx tsx src/scrapers/sync-db.ts --prune
