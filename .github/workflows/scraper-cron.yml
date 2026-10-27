@@ -4,6 +4,7 @@ on:
   schedule:
     # Paleidžiam kasdien 03:00 val. nakties
     - cron: '0 3 * * *'
+      timezone: "Europe/Vilnius"
   workflow_dispatch: 
 jobs:
   scrape-and-sync:
