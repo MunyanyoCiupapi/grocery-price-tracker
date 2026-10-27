@@ -6,7 +6,6 @@ import { normalizeSearchText } from "@/lib/groupKey";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// Prekės, kurių nematėme ilgiau nei tiek dienų, nerodomos.
 const FRESH_DAYS = 5;
 const MAX_LIMIT = 100;
 const MAX_TERMS = 6;
@@ -35,7 +34,12 @@ function escapeLike(term: string): string {
 }
 
 function toProduct(row: GroupRow): Product {
-    const items = row.items; // jau surikiuotos pagal kainą (pigiausia pirma)
+    const seenStores = new Set<string>();
+    const items = row.items.filter((it) => {
+        if (seenStores.has(it.store)) return false;
+        seenStores.add(it.store);
+        return true;
+    });
     const first = items[0];
 
     const prices: StorePrices[] = items.map((it) => ({
@@ -61,7 +65,7 @@ export async function GET(request: Request) {
         const { searchParams } = new URL(request.url);
         const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
         const limit = Math.min(MAX_LIMIT, Math.max(1, parseInt(searchParams.get("limit") || "24", 10) || 24));
-        const search = normalizeSearchText(searchParams.get("q") || "");
+        const search = normalizeSearchText((searchParams.get("q") || "").slice(0, 100));
         const compareOnly = searchParams.get("compare") === "1"; // tik prekės, parduodamos ≥2 parduotuvėse
 
         const terms = search.split(" ").filter(Boolean).slice(0, MAX_TERMS);
