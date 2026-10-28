@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { Pool } from "pg";
 import type { Product } from "../types/products";
 import { makeGroupKey, normalizeSearchText } from "../lib/groupKey";
+import { rematchAll } from "./rematch";
 
 /**
  * Įkelia scraperių JSON failus (src/scrapers/data/**) į Postgres (Supabase).
@@ -160,6 +161,9 @@ async function upsertBatch(pool: Pool, batch: Row[]) {
             );
             console.log(`🧹 Ištrinta senų prekių: ${res.rowCount}`);
         }
+
+        // tos pačios prekės su skirtingais pavadinimais sujungiamos tarp visų parduotuvių
+        await rematchAll(pool, { show: process.argv.includes("--show") });
 
         const stats = await pool.query<{ store: string; n: string }>(
             "select store, count(*) as n from public.store_products group by store order by store",

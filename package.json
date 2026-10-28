@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "scrape": "tsx src/scrapers/run-all.ts",
+    "sync": "tsx src/scrapers/sync-db.ts",
+    "rematch": "tsx src/scrapers/rematch.ts"
   },
   "dependencies": {
     "dotenv": "^18.0.8",
@@ -27,6 +30,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.2",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }
