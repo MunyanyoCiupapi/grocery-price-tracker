@@ -2,13 +2,14 @@ name: Automatinis Kainų Atnaujinimas
 
 on:
   schedule:
-    # Paleidžiam kasdien 03:00 val. nakties
-    - cron: '0 3 * * *'
+    - cron: '17 3 * * *'
       timezone: "Europe/Vilnius"
-  workflow_dispatch: 
+  workflow_dispatch:
+
 jobs:
   scrape-and-sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
 
     steps:
       - name: Atsisiųsti kodą
@@ -18,17 +19,27 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
       - name: Įdiegti priklausomybes
-        run: npm install
+        run: npm ci
 
-      - name: Įdiegti Playwright naršykles
-        run: npx playwright install --with-deps
+      - name: Įdiegti Playwright naršyklę (tik Chromium)
+        run: npx playwright install --with-deps chromium
 
       - name: Paleisti visus skraperius
+        id: scrape
+        continue-on-error: true   # jei vienas (pvz. Barbora) krenta, vis tiek sinchronizuojam, ką surinkom
         run: npx tsx src/scrapers/run-all.ts
 
       - name: Sinchronizuoti su Supabase
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: npx tsx src/scrapers/sync-db.ts --prune
+        # --prune (senų prekių trynimas) tik jei visi scraperiai pavyko
+        run: npx tsx src/scrapers/sync-db.ts ${{ steps.scrape.outcome == 'success' && '--prune' || '' }}
+
+      - name: Pažymėti darbą kaip nepavykusį, jei scraperiai krito
+        if: steps.scrape.outcome == 'failure'
+        run: |
+          echo "Bent vienas scraperis nepavyko (žr. aukščiau). Duomenys vis tiek sinchronizuoti, bet be --prune."
+          exit 1
