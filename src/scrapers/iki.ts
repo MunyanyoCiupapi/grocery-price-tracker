@@ -183,7 +183,8 @@ async function fetchProducts(categoryIds: string[], limit: number, attempt = 1):
     });
 
     if (!res.ok) {
-      throw new Error(`HTTP ${res.status}`);
+      const body = (await res.text().catch(() => "")).replace(/\s+/g, " ").slice(0, 300);
+      throw new Error(`HTTP ${res.status}${body ? ` – ${body}` : ""}`);
     }
 
     const json: any = await res.json();
@@ -324,4 +325,10 @@ function sanitizeFileName(name: string): string {
 
   const secs = Math.round((Date.now() - startedAt) / 1000);
   console.log(`\n🎉 IKI baigta! Iš viso unikalių produktų: ${totalSaved} | Trukmė: ${secs}s`);
+
+  // Jei nesurinkta nieko – tai klaida (API neatsakė / užblokavo), o ne sėkmė.
+  if (totalSaved === 0) {
+    console.error("❌ IKI: nesurinkta nė vienos prekės – žr. klaidas aukščiau.");
+    process.exit(1);
+  }
 })();
