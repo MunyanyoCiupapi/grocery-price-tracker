@@ -161,7 +161,12 @@ const LIMIT_STEPS = [1000, 500, 300, 200, 100, 50];
 let limitIdx = 0;
 const currentLimit = () => LIMIT_STEPS[limitIdx];
 
-async function fetchProducts(categoryIds: string[], attempt = 1): Promise<LastMileApiWrapper[]> {
+interface FetchResult {
+  items: LastMileApiWrapper[];
+  count: number; // bendras prekių skaičius kategorijoje pagal API (0 jei nežinomas)
+}
+
+async function fetchProducts(categoryIds: string[], sort?: string, attempt = 1): Promise<FetchResult> {
   const limit = currentLimit();
   try {
     const res = await fetch(API_URL, {
@@ -183,6 +188,7 @@ async function fetchProducts(categoryIds: string[], attempt = 1): Promise<LastMi
           categoryIds,
           isUsingStock: true,
           filter: {},
+          ...(sort ? { sort } : {}),
         },
         limit,
       }),
@@ -196,7 +202,7 @@ async function fetchProducts(categoryIds: string[], attempt = 1): Promise<LastMi
           limitIdx++;
           console.warn(`   ↘️ API atmetė limit=${limit}, bandoma su ${currentLimit()}...`);
         }
-        return fetchProducts(categoryIds, attempt); // be bandymo skaičiaus didinimo
+        return fetchProducts(categoryIds, sort, attempt); // be bandymo skaičiaus didinimo
       }
       throw new Error(`HTTP ${res.status}${body ? ` – ${body}` : ""}`);
     }
@@ -213,16 +219,41 @@ async function fetchProducts(categoryIds: string[], attempt = 1): Promise<LastMi
             ? json.products
             : [];
 
-    return items;
+    return { items, count: typeof json?.count === "number" ? json.count : 0 };
   } catch (err) {
     if (attempt <= 3) {
       console.warn(`   ⚠️ Užklausa nepavyko (bandymas ${attempt}/3): ${(err as Error).message}. Bandoma iš naujo...`);
       await randomDelay(1500 * attempt, 2500 * attempt);
-      return fetchProducts(categoryIds, attempt + 1);
+      return fetchProducts(categoryIds, sort, attempt + 1);
     }
     console.error(`   ❌ Nepavyko po 3 bandymų kategorijoms [${categoryIds.slice(0, 2).join(", ")}...]:`, err);
-    return [];
+    return { items: [], count: 0 };
   }
+}
+
+/**
+ * API duoda daugiausia `limit` (dabar 100) prekių. Jei kategorija didesnė, papildomai kraunam
+ * ta pačią kategoriją su kita tvarka (kaina didėjančiai / mažėjančiai) ir sujungiam – taip
+ * pasiekiam abu galus. Veikiančios reikšmės rastos testais: priceAsc, priceDesc, price_asc.
+ */
+const EXTRA_SORTS = ["priceAsc", "priceDesc", "price_asc"];
+
+async function fetchAll(categoryIds: string[]): Promise<FetchResult> {
+  const first = await fetchProducts(categoryIds);
+  if (first.items.length < currentLimit() * 0.95) return first;
+
+  const byId = new Map<string, LastMileApiWrapper>();
+  const add = (list: LastMileApiWrapper[]) => {
+    for (const w of list) {
+      const id = w.frontEndProduct?.productId;
+      if (id && !byId.has(id)) byId.set(id, w);
+    }
+  };
+  add(first.items);
+  for (const sort of EXTRA_SORTS) {
+    add((await fetchProducts(categoryIds, sort)).items);
+  }
+  return { items: [...byId.values()], count: first.count };
 }
 
 function mapUnit(conversionMeasure: string, unitOfMeasure: string): string {
@@ -297,23 +328,26 @@ function sanitizeFileName(name: string): string {
 
   const seenIds = new Set<string>();
   let totalSaved = 0;
+  let totalMissing = 0; // prekės, kurių API neatidavė dėl limit
 
   await runPool(IKI_CATEGORY_GROUPS, CONCURRENCY, async (group, i) => {
     const tag = `[${i + 1}/${IKI_CATEGORY_GROUPS.length}]`;
     console.log(`${tag} Kraunama: "${group.name}" (${group.ids.length} subkategorijos)...`);
 
-    let items = await fetchProducts(group.ids);
+    let items = (group.ids.length === 1 ? await fetchAll(group.ids) : await fetchProducts(group.ids)).items;
 
     // Jei rezultatas atrodo apkarpytas (limit 1000) – kraunam po subkategoriją, po kelias vienu metu.
     if (items.length >= currentLimit() * 0.95 && group.ids.length > 1) {
       console.log(`${tag} ⚠️ ${items.length} įrašų – atrodo apkarpyta, kraunama subkategorijomis...`);
       items = [];
       await runPool(group.ids, 3, async (singleCategoryId) => {
-        const single = await fetchProducts([singleCategoryId]);
-        if (single.length >= currentLimit() * 0.95) {
-          console.warn(`${tag} ⚠️ subkategorija ${singleCategoryId} pasiekė limit=${currentLimit()} – dalis prekių gali trūkti.`);
+        const single = await fetchAll([singleCategoryId]);
+        if (single.count > 0 && single.items.length < single.count) {
+          const missing = single.count - single.items.length;
+          totalMissing += missing;
+          console.warn(`${tag} ⚠️ subkategorija ${singleCategoryId}: gauta ${single.items.length} iš ${single.count} (trūksta ${missing})`);
         }
-        items.push(...single);
+        items.push(...single.items);
         await randomDelay(100, 300);
       });
     }
@@ -342,6 +376,7 @@ function sanitizeFileName(name: string): string {
 
   const secs = Math.round((Date.now() - startedAt) / 1000);
   console.log(`\n🎉 IKI baigta! Iš viso unikalių produktų: ${totalSaved} | Trukmė: ${secs}s`);
+  if (totalMissing > 0) console.log(`ℹ️ IKI: dėl API limito nesurinkta apie ${totalMissing} prekių.`);
 
   // Jei nesurinkta nieko – tai klaida (API neatsakė / užblokavo), o ne sėkmė.
   if (totalSaved === 0) {
