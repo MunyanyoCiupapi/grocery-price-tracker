@@ -26,6 +26,24 @@ const STOPWORDS = new Set([
     "olandija", "belgija", "estija", "latvija", "kg", "g", "ml", "l", "cl",
 ]);
 
+/**
+ * Žinomi to paties produkto pavadinimų variantai (rašyk be diakritikų, mažosiomis).
+ * Pridėk čia naujų, kai pastebėsi, kad ta pati prekė skirtingose parduotuvėse nesusijungia.
+ */
+const ALIASES: [RegExp, string][] = [
+    // "su baltuoju šokoladu" = "WHITE" (Kinder Bueno ir pan.)
+    [/\bbalt\w*\s+sokolad\w*/g, "white"],
+    [/\bmonster\s+ultra\s+white\b/g, "monster zero ultra"],
+    [/\bmonster\s+white\s+ultra\b/g, "monster zero ultra"],
+    [/\bgelis\b/g, "zele"], // dušo gelis = dušo želė
+];
+
+function applyAliases(text: string): string {
+    let value = stripDiacritics(text);
+    for (const [pattern, replacement] of ALIASES) value = value.replace(pattern, replacement);
+    return value;
+}
+
 /** mažosios raidės, be lietuviškų (ir kitų) diakritikų */
 export function stripDiacritics(text: string): string {
     return text
@@ -34,6 +52,7 @@ export function stripDiacritics(text: string): string {
         .replace(/ł/g, "l")
         .replace(/đ/g, "d")
         .replace(/ß/g, "ss")
+        .replace(/['’`´]/g, "") // L'OR -> LOR, LAY'S -> LAYS, BALLANTINE`S -> BALLANTINES
         .toLowerCase();
 }
 
@@ -104,9 +123,15 @@ function sizeToKey(size: ParsedSize | null): string {
 }
 
 function tokenize(text: string): string[] {
-    const withPercent = stripDiacritics(text).replace(/(\d+(?:[.,]\d+)?)\s*%/g, (_m, n: string) => ` ${n.replace(",", ".")}pct `);
+    const withPercent = stripDiacritics(text)
+        .replace(/(\d+(?:[.,]\d+)?)\s*%/g, (_m, n: string) => ` ${String(parseFloat(n.replace(",", ".")))}pct `)
+        // "V.S.O.P" -> "vsop", "O.B." -> "ob": taškai tarp pavienių raidžių išmetami
+        .replace(/(?<=\b[a-z])\.(?=[a-z]\b)/g, "")
+        // "pad.su" / "J.P.CHENET" -> žodžiai atskiriami (tarp raidžių taškas = tarpas)
+        .replace(/(?<=[a-z])\.(?=[a-z])/g, " ");
 
     const tokens = withPercent
+        .replace(/(?<=[a-z])\.(?=[a-z])/g, " ") // "raud.saus.vynas" -> "raud saus vynas"
         .replace(/[^a-z0-9.\s]+/g, " ")
         .split(/\s+/)
         .map((t) => t.replace(/^\.+|\.+$/g, ""))
@@ -119,7 +144,17 @@ function tokenize(text: string): string[] {
  * @param name              prekės pavadinimas
  * @param measurementUnit   parduotuvės pateiktas vienetas ("300 g", "kg", "vnt.")
  */
+/** Pavadinimo valymas prieš raktą: apostrofai, "Nr. 12", brandinimo metai, inicialai su taškais. */
+function cleanName(name: string): string {
+    return name
+        .replace(/['’`´]/g, "") // LAY'S -> LAYS, L'OR -> LOR
+        .replace(/\bNr\.?\s*\d+/gi, " ") // "Nr. 166" – tai ne produkto skiriamasis požymis
+        .replace(/(\d+)\s*(?:y\.?\s?o\b\.?|years?\s+old\b|years?\b|metų)/gi, "$1yo") // 12 YEARS / 12 YO / 10Y.O. -> 12yo
+        .replace(/\b([A-Za-z])\.(?=[A-Za-z]\b)/g, "$1"); // J.P.CHENET -> JP.CHENET, O.B. -> OB.
+}
+
 export function makeGroupKey(name: string, measurementUnit?: string): string {
+    name = cleanName(name);
     const fromName = extractSize(name);
     let size = fromName.size;
 
@@ -130,6 +165,6 @@ export function makeGroupKey(name: string, measurementUnit?: string): string {
     // ("Bananai" vs "Bananai, 1 kg"), o mums svarbu, kad jos susijungtų.
     if (size && size.amount === 1000 && size.kind !== "pcs") size = null;
 
-    const tokens = tokenize(fromName.rest);
+    const tokens = tokenize(applyAliases(fromName.rest));
     return `${tokens.join(" ")}|${sizeToKey(size)}`;
 }
