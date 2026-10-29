@@ -1,4 +1,4 @@
-import { makeGroupKey, normalizeSearchText } from "./groupKey";
+import { extractSize, makeGroupKey, normalizeSearchText } from "./groupKey";
 
 /**
  * Prekių suporavimas tarp parduotuvių (neapibrėžtas / "fuzzy" jungimas).
@@ -15,8 +15,8 @@ import { makeGroupKey, normalizeSearchText } from "./groupKey";
  *        - tikslus dydis (43 g),
  *     ir dar bent dalis likusių žodžių (batonėlis, vaflinis...).
  *  3. Apsaugos nuo klaidingo sujungimo:
- *        - tos pačios parduotuvės dvi prekės niekada nelieka vienoje grupėje
- *          (parduotuvė vienos prekės du kartus neturi),
+ *        - tos pačios parduotuvės dvi prekės vienoje grupėje lieka tik jei jos labai panašios
+ *          (kai kurios parduotuvės tą pačią prekę turi du kartus; svetainė rodo pigiausią),
  *        - skirtingi riebumo % ar skaičiai ("2.5%" vs "3.2%") neleidžia jungti,
  *        - variantų žodžiai (white / dark / zero / baltas / juodas...) turi sutapti.
  *  4. Poros jungiamos nuo geriausio balo žemyn, tad tikros poros turi pirmenybę.
@@ -48,6 +48,8 @@ export interface MatchResult {
 }
 
 const MIN_SCORE = 0.3;
+const STRONG_BRAND_SCORE = 0.4; // stiprus ženklas + dydis, bet aprašomieji žodžiai skiriasi
+const SAME_STORE_MIN_SCORE = 0.65; // tos pačios parduotuvės dvi prekės vienoje grupėje – tik jei bent tiek panašios
 const MAX_BLOCK_SIZE = 400;
 
 const GENERIC_CAPS = new Set([
@@ -55,13 +57,25 @@ const GENERIC_CAPS = new Set([
     "MSC", "ASC", "BBQ", "UV", "DVD", "WC", "KG", "ML", "VNT", "NEW",
 ]);
 
+// prekės tipo žodžių stem'ai: jei abi pusės turi tipą ir jie skirtingi – tai skirtingos prekės
+const TYPE_STEMS = new Set([
+    "samp", "kond", "krem", "vand", "kauk", "zele", "past", "laka", "seru", "dezo", "muil", "puto",
+]);
+
 // žodžiai, kurie neturi įtakos, ar tai ta pati prekė
 const FILLER = new Set(["su", "ir", "bei", "is", "del", "skonio", "skoniu"]);
 
 // jei toks žodis yra tik vienoje pusėje – tai skirtingos prekės (jau po stem'inimo)
 const VARIANT_STEMS = new Set([
-    "whit", "dark", "blac", "zero", "ligh", "lite", "clas", "orig", "balt", "juod",
+    "whit", "dark", "blac", "zero", "ligh", "lite", "clas", "orig",
+    "neal", // nealkoholinis / nealk.
+    "ekol", // ekologiškas / ekol.
 ]);
+
+// tarpusavyje nesuderinami žodžiai: jei viena pusė turi vieną, o kita kitą – tai skirtingos prekės
+// (baltasis / raudonasis / rožinis vynas, pieninis / juodasis šokoladas, žaliosios / juodosios alyvuogės)
+const EXCLUSIVE_STEMS = new Set(["balt", "raud", "rozi", "zali", "juod", "pien"]);
+const normExclusive = (t: string) => (t === "raus" ? "rozi" : t); // rausvasis = rožinis
 
 /** primityvus lietuvių k. stem'as: žodžiai nuo 5 raidžių sutrumpinami iki 4 (sūriu/sūrio -> suri) */
 function stem(word: string): string {
@@ -71,6 +85,7 @@ function stem(word: string): string {
 interface Parsed {
     key: string;
     sizeKey: string;
+    sizeKeys: Set<string>; // visi pavadinime rasti dydžiai ("90 ml / 62 g" -> 90ml, 62g)
     brand: string[]; // stem'ai
     brandSet: Set<string>;
     all: Set<string>; // visi žodžių stem'ai (įskaitant prekės ženklą), be pct ir skaičių
@@ -80,7 +95,9 @@ interface Parsed {
 }
 
 /** Prekės ženklas = žodžiai, parašyti DIDŽIOSIOMIS (jei ne visas pavadinimas didžiosiomis). */
-function extractBrandTokens(name: string): string[] {
+function extractBrandTokens(rawName: string): string[] {
+    // "V.S.O.P" -> "VSOP", "J.P.CHENET" -> "JP.CHENET" (taškai tarp pavienių raidžių)
+    const name = rawName.replace(/(?<=\b\p{L})\.(?=\p{L}\b)/gu, "");
     const words = name.split(/[\s,;()/]+/).filter(Boolean);
     const letterWords = words.filter((w) => /\p{L}/u.test(w));
     if (letterWords.length === 0) return [];
@@ -108,6 +125,23 @@ function parse(name: string, unit?: string | null): Parsed {
     const sizeKey = key.slice(sep + 1);
     const tokens = key.slice(0, sep).split(" ").filter(Boolean);
 
+    // visi dydžiai pavadinime (ir vienete): "90 ml / 62 g" -> {90ml, 62g}
+    const sizeKeys = new Set<string>();
+    const sizeAmounts = new Set<number>();
+    const addSize = (sz: { amount: number; kind: string } | null) => {
+        if (!sz) return;
+        sizeAmounts.add(sz.amount);
+        sizeKeys.add(`${sz.amount}${sz.kind}`);
+    };
+    let sizeText = name;
+    for (let n = 0; n < 3; n++) {
+        const r = extractSize(sizeText);
+        if (!r.size) break;
+        addSize(r.size);
+        sizeText = r.rest;
+    }
+    if (unit) addSize(extractSize(unit).size);
+    if (sizeKey) sizeKeys.add(sizeKey);
     const brand = extractBrandTokens(name);
     const brandSet = new Set(brand);
 
@@ -120,6 +154,9 @@ function parse(name: string, unit?: string | null): Parsed {
         if (t.endsWith("pct")) {
             pct.add(t);
         } else if (/\d/.test(t)) {
+            // dydis, parašytas du kartus ("0,7 l, 700 ml"), nėra produkto skiriamasis skaičius
+            const num = Number(t);
+            if (sizeAmounts.has(num) || sizeAmounts.has(num * 1000)) continue;
             nums.add(t);
         } else {
             const s = stem(t);
@@ -128,7 +165,7 @@ function parse(name: string, unit?: string | null): Parsed {
         }
     }
 
-    return { key, sizeKey, brand, brandSet, all, rest, pct, nums };
+    return { key, sizeKey, sizeKeys, brand, brandSet, all, rest, pct, nums };
 }
 
 function setsEqual<T>(a: Set<T>, b: Set<T>): boolean {
@@ -144,12 +181,16 @@ function isSubset(small: Iterable<string>, large: Set<string>): boolean {
 
 /**
  * Prekės ženklas sutampa, jei:
- *  - abu turi (didžiosiomis rašytą) ženklą ir vienas yra kito dalis, arba
+ *  - abu turi (didžiosiomis rašytą) ženklą ir jie vienodi, arba
  *  - vienas ženklo nerašo didžiosiomis ("Coca-Cola"), bet to ženklo žodžiai yra jo pavadinime.
  */
 function brandMatches(a: Parsed, b: Parsed): boolean {
     if (a.brand.length > 0 && b.brand.length > 0) {
-        return a.brand.length <= b.brand.length ? isSubset(a.brand, b.brandSet) : isSubset(b.brand, a.brandSet);
+        // vienodi ženklai, arba trumpesnis (≥2 žodžių) yra ilgesnio dalis: "LAVAZZA GRAN CREMA" ~ "LAVAZZA GRAN CREMA ESPRESSO".
+        // Vieno žodžio ženklas + papildomi didžiosios žodžiai = kitas produktas: "JAMESON" ≠ "JAMESON BLACK BARREL".
+        if (a.brand.length === b.brand.length) return isSubset(a.brand, b.brandSet);
+        const [small, large] = a.brand.length < b.brand.length ? [a, b] : [b, a];
+        return small.brand.length >= 2 && isSubset(small.brand, large.brandSet);
     }
     if (a.brand.length > 0) return isSubset(a.brand, b.all);
     if (b.brand.length > 0) return isSubset(b.brand, a.all);
@@ -157,32 +198,77 @@ function brandMatches(a: Parsed, b: Parsed): boolean {
 }
 
 /** 0 = nesutampa, kitaip balas (0..1). */
-function matchScore(a: Parsed, b: Parsed): number {
-    if (!a.sizeKey || a.sizeKey !== b.sizeKey) return 0;
+function sameBrand(a: Parsed, b: Parsed): boolean {
+    return a.brand.length === b.brand.length && isSubset(a.brand, b.brandSet);
+}
+
+function matchScore(a: Parsed, b: Parsed, sameStore = false): number {
+    let sizeOk = false;
+    for (const k of a.sizeKeys) if (b.sizeKeys.has(k)) { sizeOk = true; break; }
+    if (!sizeOk) return 0;
+
+    // skirtingi vienetų skaičiai (40 vnt. vs 72 vnt.) – skirtingi pakuotės dydžiai, net jei kitas dydis (kg intervalas) sutampa
+    const pcsA = [...a.sizeKeys].filter((k) => k.endsWith("pcs"));
+    const pcsB = [...b.sizeKeys].filter((k) => k.endsWith("pcs"));
+    if (pcsA.length > 0 && pcsB.length > 0 && !pcsA.some((k) => pcsB.includes(k))) return 0;
     if (!brandMatches(a, b)) return 0;
 
     // skirtingi riebumo % arba skaičiai -> skirtingos prekės
     if (a.pct.size > 0 && b.pct.size > 0 && !setsEqual(a.pct, b.pct)) return 0;
-    if (a.nums.size > 0 && b.nums.size > 0 && !setsEqual(a.nums, b.nums)) return 0;
+    // skaičius tik vienoje pusėje (pvz. "12 YEARS" vs paprastas viskis) – tai skirtingi produktai
+    if ((a.nums.size > 0 || b.nums.size > 0) && !setsEqual(a.nums, b.nums)) return 0;
 
     // likę žodžiai be (abiejų) prekės ženklo žodžių
     const restA = new Set([...a.rest].filter((t) => !b.brandSet.has(t)));
     const restB = new Set([...b.rest].filter((t) => !a.brandSet.has(t)));
 
-    // variantų žodis tik vienoje pusėje (white / dark / zero ...)
+    // variantų žodis tik vienoje pusėje (white / dark / zero / nealk. ...) – tikrinam visus žodžius, ir ženklo
     for (const v of VARIANT_STEMS) {
-        if (restA.has(v) !== restB.has(v)) return 0;
+        if (a.all.has(v) !== b.all.has(v)) return 0;
     }
+
+    const exA = [...restA].map(normExclusive).filter((t) => EXCLUSIVE_STEMS.has(t));
+    const exB = [...restB].map(normExclusive).filter((t) => EXCLUSIVE_STEMS.has(t));
+    if (exA.length > 0 && exB.length > 0 && !exA.some((t) => exB.includes(t))) return 0;
+
+    // skirtingi prekės tipai su tuo pačiu ženklu (šampūnas vs kondicionierius, kremas vs micelinis vanduo) – skirtingos prekės
+    const typesA = [...restA].filter((t) => TYPE_STEMS.has(t));
+    const typesB = [...restB].filter((t) => TYPE_STEMS.has(t));
+    if (typesA.length > 0 && typesB.length > 0 && !typesA.some((t) => typesB.includes(t))) return 0;
+
+    // identiškas, bent 3 žodžių ženklas/linija ("DOVE FRUITY NOURISH", "COLGATE ADVANCE WHITE PURPLE") + tas pats dydis:
+    // aprašomieji žodžiai (želė / gelis, skutimosi / skustuvo) nebeturi lemiamos reikšmės
+    const strongBrand = a.brand.length >= 3 && a.brand.length === b.brand.length;
 
     // vienoje pusėje papildomų žodžių nėra – prekės ženklas + dydis jau gana tikslus
     if (restA.size === 0 || restB.size === 0) return 0.5;
 
+    // žodžių sutapimas; sutrumpinimai laikomi tuo pačiu žodžiu ("mar." ~ "marinuoti", "sk." ~ "skystasis")
+    const used = new Set<string>();
     let shared = 0;
-    for (const t of restA) if (restB.has(t)) shared++;
-    if (shared === 0) return 0;
+    for (const t of restA) {
+        for (const u of restB) {
+            if (used.has(u)) continue;
+            if (t === u || (Math.min(t.length, u.length) >= 3 && (t.startsWith(u) || u.startsWith(t)))) {
+                used.add(u);
+                shared++;
+                break;
+            }
+        }
+    }
+    if (shared === 0) return strongBrand ? STRONG_BRAND_SCORE : 0;
 
+    const unmatchedA = restA.size - shared;
+    const unmatchedB = restB.size - shared;
     const jaccard = shared / (restA.size + restB.size - shared);
-    return jaccard >= MIN_SCORE ? jaccard : 0;
+
+    // abiejose pusėse yra "svetimų" žodžių (pvz. skirtingi skoniai: agrastų / vyšnių) – jungiam tik jei labai panašu
+    // tos pačios parduotuvės dvi prekės: jungiam tik kai viena pavadinimo žodžių aibė yra kitos dalis
+    if (sameStore && unmatchedA > 0 && unmatchedB > 0) return 0;
+    if (unmatchedA > 0 && unmatchedB > 0 && jaccard <= 0.5) return strongBrand ? STRONG_BRAND_SCORE : 0;
+
+    if (jaccard >= MIN_SCORE) return jaccard;
+    return strongBrand ? STRONG_BRAND_SCORE : 0;
 }
 
 interface Node {
@@ -222,6 +308,8 @@ export function clusterProducts(inputs: MatchInput[]): MatchResult {
     // 2) union-find
     const parent = nodes.map((_, i) => i);
     const clusterStores = nodes.map((n) => new Set(n.stores));
+    // klasterio riebumo/stiprumo % reikšmės: klasteryje negali atsirasti dvi skirtingos (apsauga nuo sujungimo per prekę be %)
+    const clusterPct = nodes.map((n) => new Set(n.parsed.pct));
     const find = (x: number): number => {
         while (parent[x] !== x) {
             parent[x] = parent[parent[x]];
@@ -239,16 +327,17 @@ export function clusterProducts(inputs: MatchInput[]): MatchResult {
     };
 
     nodes.forEach((n, i) => {
-        if (!n.parsed.sizeKey) return;
-        for (const b of n.parsed.brand) addToBlock(`${n.parsed.sizeKey}|${b}`, i);
+        for (const sk of n.parsed.sizeKeys) for (const b of n.parsed.brand) addToBlock(`${sk}|${b}`, i);
     });
 
     // prekės be didžiosiomis rašyto ženklo ("Coca-Cola") patenka į blokus tų ženklų, kuriuos jų pavadinime jau žinom
     nodes.forEach((n, i) => {
-        if (!n.parsed.sizeKey || n.parsed.brand.length > 0) return;
-        for (const t of n.parsed.all) {
-            const k = `${n.parsed.sizeKey}|${t}`;
-            if (blocks.has(k)) addToBlock(k, i);
+        if (n.parsed.brand.length > 0) return;
+        for (const sk of n.parsed.sizeKeys) {
+            for (const t of n.parsed.all) {
+                const k = `${sk}|${t}`;
+                if (blocks.has(k)) addToBlock(k, i);
+            }
         }
     });
 
@@ -270,13 +359,16 @@ export function clusterProducts(inputs: MatchInput[]): MatchResult {
                 if (seenPairs.has(pairKey)) continue;
                 seenPairs.add(pairKey);
 
-                // tos pačios parduotuvės prekės nejungiamos
                 let overlap = false;
                 for (const s of nodes[a].stores) if (nodes[b].stores.has(s)) { overlap = true; break; }
-                if (overlap) continue;
 
-                const score = matchScore(nodes[a].parsed, nodes[b].parsed);
-                if (score > 0) candidates.push({ a, b, score });
+                const score = matchScore(nodes[a].parsed, nodes[b].parsed, overlap);
+                if (score <= 0) continue;
+
+                // tos pačios parduotuvės prekės jungiamos tik jei labai panašios
+                if (overlap && (score < SAME_STORE_MIN_SCORE || !sameBrand(nodes[a].parsed, nodes[b].parsed))) continue;
+
+                candidates.push({ a, b, score });
             }
         }
     }
@@ -293,9 +385,13 @@ export function clusterProducts(inputs: MatchInput[]): MatchResult {
 
         let overlap = false;
         for (const s of clusterStores[ra]) if (clusterStores[rb].has(s)) { overlap = true; break; }
-        if (overlap) continue;
+        if (overlap && c.score < SAME_STORE_MIN_SCORE) continue; // (ženklų lygybė jau patikrinta poros lygyje)
+
+        const pctUnion = new Set([...clusterPct[ra], ...clusterPct[rb]]);
+        if (pctUnion.size > 1) continue;
 
         parent[rb] = ra;
+        clusterPct[ra] = pctUnion;
         for (const s of clusterStores[rb]) clusterStores[ra].add(s);
 
         fuzzy.push({
