@@ -36,6 +36,11 @@ const ALIASES: [RegExp, string][] = [
     [/\bmonster\s+ultra\s+white\b/g, "monster zero ultra"],
     [/\bmonster\s+white\s+ultra\b/g, "monster zero ultra"],
     [/\bgelis\b/g, "zele"], // dušo gelis = dušo želė
+    // skaičiai žodžiais: "keturių grūdų" = "4 grūdų"
+    [/\bdviej\w*/g, "2"],
+    [/\btrij\w*/g, "3"],
+    [/\bketur\w*/g, "4"],
+    [/\bpenk\w*/g, "5"],
 ];
 
 function applyAliases(text: string): string {
@@ -135,7 +140,7 @@ function tokenize(text: string): string[] {
         .replace(/[^a-z0-9.\s]+/g, " ")
         .split(/\s+/)
         .map((t) => t.replace(/^\.+|\.+$/g, ""))
-        .filter((t) => t.length > 1 && !STOPWORDS.has(t));
+        .filter((t) => (t.length > 1 || /\d/.test(t)) && !STOPWORDS.has(t));
 
     return [...new Set(tokens)].sort();
 }
@@ -148,7 +153,10 @@ function tokenize(text: string): string[] {
 function cleanName(name: string): string {
     return name
         .replace(/['’`´]/g, "") // LAY'S -> LAYS, L'OR -> LOR
-        .replace(/\bNr\.?\s*\d+/gi, " ") // "Nr. 166" – tai ne produkto skiriamasis požymis
+        // "Nr. 166" dažniausiai ne skiriamasis požymis, bet dažų / siūlų / lūpdažių / nagų lako atspalvis – skiria prekes
+        .replace(/\bNr\.?\s*(\d+(?:[.,]\d+)?)/gi, (_m, n: string) =>
+            /(da[žz]ai|siūl|siul|lūpų|lupu|nagų|nagu|pieštuk|pieštuk|tušas|tusas)/i.test(name) ? ` nr${n.replace(/[.,]/g, "")} ` : " ")
+        .replace(/\bdydis:?\s*(XXL|XL|XS|S|M|L|XXS)\b/gi, " dydis$1 ") // "dydis: L" vs "dydis: M" – skirtingi dydžiai
         .replace(/(\d+)\s*(?:y\.?\s?o\b\.?|years?\s+old\b|years?\b|metų)/gi, "$1yo") // 12 YEARS / 12 YO / 10Y.O. -> 12yo
         .replace(/\b([A-Za-z])\.(?=[A-Za-z]\b)/g, "$1"); // J.P.CHENET -> JP.CHENET, O.B. -> OB.
 }
