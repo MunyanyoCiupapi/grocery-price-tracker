@@ -533,6 +533,85 @@ export default function Home() {
               </section>
             )}
 
+            {/* kainų lentelė: prekė × parduotuvė */}
+            {!offersLoading && !offersError && best && (
+              <section>
+                <h3 className="text-xs uppercase tracking-widest text-neutral-400 mb-3">Kaip skaičiuojama</h3>
+                <div className="overflow-x-auto -mx-1 px-1">
+                  <table className="w-full text-xs tabular-nums border-collapse">
+                    <thead>
+                      <tr className="text-neutral-400">
+                        <th className="text-left font-normal pb-2 pr-2">Prekė</th>
+                        {totals.perStore
+                          .filter((st) => st.missing.length < Object.keys(cart).length)
+                          .map((st) => (
+                            <th key={st.store} className="text-right font-medium pb-2 pl-2 text-neutral-700">
+                              {storeLabel(st.store)}
+                            </th>
+                          ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.entries(cart).map(([key, line]) => {
+                        const shown = totals.perStore.filter((st) => st.missing.length < Object.keys(cart).length);
+                        const prices = shown
+                          .map((st) => offers[key]?.[st.store]?.price)
+                          .filter((v): v is number => v !== undefined);
+                        const min = prices.length ? Math.min(...prices) : undefined;
+                        return (
+                          <tr key={key} className="border-t border-neutral-100">
+                            <td className="py-2 pr-2 align-top max-w-[9rem]">
+                              <div className="line-clamp-2 leading-snug text-neutral-700">
+                                {line.qty > 1 ? `${line.qty} × ` : ""}
+                                {line.name}
+                              </div>
+                            </td>
+                            {shown.map((st) => {
+                              const o = offers[key]?.[st.store];
+                              return (
+                                <td
+                                  key={st.store}
+                                  className={`py-2 pl-2 text-right align-top ${
+                                    o && o.price === min ? "text-emerald-600 font-semibold" : o ? "" : "text-neutral-300"
+                                  }`}
+                                >
+                                  {o ? eur(o.price * line.qty) : "—"}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                    <tfoot>
+                      <tr className="border-t-2 border-neutral-900">
+                        <td className="pt-2 pr-2 font-semibold">Iš viso</td>
+                        {totals.perStore
+                          .filter((st) => st.missing.length < Object.keys(cart).length)
+                          .map((st) => (
+                            <td
+                              key={st.store}
+                              className={`pt-2 pl-2 text-right font-semibold ${
+                                st.store === best.store ? "text-emerald-600" : ""
+                              }`}
+                            >
+                              {eur(st.total)}
+                              {!st.complete && <span className="text-red-500">*</span>}
+                            </td>
+                          ))}
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                {totals.perStore.some((st) => !st.complete && st.missing.length < Object.keys(cart).length) && (
+                  <p className="mt-2 text-xs text-neutral-400">
+                    <span className="text-red-500">*</span> Šioje parduotuvėje trūksta kai kurių prekių, todėl suma nepilna
+                    ir jos nerekomenduojame.
+                  </p>
+                )}
+              </section>
+            )}
+
             {/* prekės */}
             <section>
               <h3 className="text-xs uppercase tracking-widest text-neutral-400 mb-3">
