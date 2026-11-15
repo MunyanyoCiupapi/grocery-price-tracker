@@ -39,17 +39,17 @@ const RETRY_PASS_ATTEMPTS = 6;
 const RETRY_PASSES = 3;
 
 const CATEGORIES = [
-    "https://barbora.lt/darzoves-ir-vaisiai",
-    "https://barbora.lt/pieno-gaminiai-kiausiniai-ir-majonezas",
-    "https://barbora.lt/duonos-gaminiai-ir-konditerija",
-    "https://barbora.lt/mesa-zuvis-ir-kulinarija",
-    "https://barbora.lt/bakaleja",
-    "https://barbora.lt/saldytas-maistas",
-    "https://barbora.lt/gerimai",
-    "https://barbora.lt/kudikiu-ir-vaiku-prekes",
-    "https://barbora.lt/kosmetika-ir-higiena",
-    "https://barbora.lt/svaros-ir-gyvunu-prekes",
-    "https://barbora.lt/namai-ir-laisvalaikis",
+    "https://barbora.lt/c/KP8A/darzoves-ir-vaisiai",
+    "https://barbora.lt/c/JZV8/pieno-gaminiai-kiausiniai-ir-majonezas",
+    "https://barbora.lt/c/Z1ZC/duonos-gaminiai-ir-konditerija",
+    "https://barbora.lt/c/KVGA/mesa-zuvis-ir-kulinarija",
+    "https://barbora.lt/c/8ES4/bakaleja",
+    "https://barbora.lt/c/4X7M/saldytas-maistas",
+    "https://barbora.lt/c/B331/gerimai",
+    "https://barbora.lt/c/5MHL/kudikiu-ir-vaiku-prekes",
+    "https://barbora.lt/c/8GL4/kosmetika-ir-higiena",
+    "https://barbora.lt/c/V3UD/svaros-ir-gyvunu-prekes",
+    "https://barbora.lt/c/U6TX/namai-ir-laisvalaikis",
 ];
 
 const randomDelay = (min: number, max: number) =>
@@ -91,55 +91,62 @@ async function extractItems(page: Page) {
     return page
         .evaluate(() => {
             const items: any[] = [];
-            const cardElements = Array.from(document.querySelectorAll("li[data-testid^='product-card']"));
+            const seen = new Set<string>();
+            const recs = document.querySelector("[data-testid='category-recommendations']");
 
-            cardElements.forEach((card) => {
-                const htmlCard = card as HTMLElement;
-                const cardText = htmlCard.innerText || htmlCard.textContent || "";
+            for (const a of Array.from(document.querySelectorAll("a[href^='/p/']"))) {
+                if (recs && recs.contains(a)) continue; // "populiariausios" karuselė – ne kategorijos prekės
 
-                const isOutOfStock =
-                    card.querySelector("[data-testid='out-of-stock-button']") !== null ||
-                    cardText.includes("Atsiprašome, šiuo metu prekės neturime") ||
-                    cardText.includes("Išparduota");
+                const href = (a.getAttribute("href") || "").split("?")[0];
+                if (!href || seen.has(href)) continue;
 
-                if (isOutOfStock) return;
+                // kortelė = didžiausias konteineris, kuriame yra tik ši prekė
+                let card: HTMLElement = a as HTMLElement;
+                for (let i = 0; i < 8; i++) {
+                    const parent = card.parentElement;
+                    if (!parent) break;
+                    const hrefs = new Set(
+                        Array.from(parent.querySelectorAll("a[href^='/p/']")).map((x) => (x.getAttribute("href") || "").split("?")[0]),
+                    );
+                    if (hrefs.size > 1) break;
+                    card = parent;
+                }
 
-                const placeholder = card.querySelector("div[data-b-for-cart]");
-                const rawJson = placeholder?.getAttribute("data-b-for-cart");
-                if (!rawJson) return;
+                const text = (card.innerText || card.textContent || "").replace(/\s+/g, " ");
+                if (/išparduota|šiuo metu prekės neturime|laikinai nėra/i.test(text)) continue;
 
-                try {
-                    const data = JSON.parse(rawJson);
-                    if (data.status === "suspended" || !data.price || data.price <= 0) return;
+                // pavadinimas: nuoroda su tekstu (kita nuoroda – tik nuotrauka)
+                let title = "";
+                for (const link of Array.from(card.querySelectorAll("a[href^='/p/']"))) {
+                    const t = ((link as HTMLElement).innerText || "").replace(/\s+/g, " ").trim();
+                    if (t.length > title.length) title = t;
+                }
+                if (!title) title = card.querySelector("img")?.getAttribute("alt")?.trim() || "";
+                if (!title) continue;
 
-                    const currentPrice = Number(data.price);
-                    let oldPrice: number | undefined = undefined;
+                // kainos: "1 . 15 €" (be "€/kg" kainos už vienetą)
+                const prices = Array.from(text.matchAll(/(\d{1,4})\s*[.,]\s*(\d{2})\s*€(?!\s*\/)/g)).map((m) =>
+                    Number(`${m[1]}.${m[2]}`),
+                );
+                const price = prices[0];
+                if (!price || price <= 0) continue;
+                const oldPrice = prices.find((p, idx) => idx > 0 && p > price);
 
-                    if (data.promotion?.oldPrice && Number(data.promotion.oldPrice) > currentPrice) {
-                        oldPrice = Number(data.promotion.oldPrice);
-                    } else if (data.retail_price && Number(data.retail_price) > currentPrice) {
-                        oldPrice = Number(data.retail_price);
-                    }
+                const unitMatch = text.match(/\d[.,]\d{2}\s*€\s*\/\s*([^\s\d]+)/);
+                const imgEl = card.querySelector("img") as HTMLImageElement | null;
 
-                    const linkEl = card.querySelector("a[href*='/produktai/']") as HTMLAnchorElement;
-                    let relativeUrl = linkEl ? linkEl.getAttribute("href") : "";
-                    if (!relativeUrl && data.Url) {
-                        relativeUrl = "/produktai/" + data.Url;
-                    }
-                    const fullUrl = relativeUrl ? (relativeUrl.startsWith("http") ? relativeUrl : "https://barbora.lt" + relativeUrl) : "";
-
-                    items.push({
-                        id: data.id || data.item_id,
-                        title: data.title,
-                        price: currentPrice,
-                        oldPrice: oldPrice,
-                        isOnSale: oldPrice !== undefined,
-                        unit: data.comparative_unit || "vnt.",
-                        image: data.big_image || data.image || undefined,
-                        fullUrl: fullUrl,
-                    });
-                } catch (e) {}
-            });
+                seen.add(href);
+                items.push({
+                    id: href.replace(/^\/p\//, ""),
+                    title,
+                    price,
+                    oldPrice,
+                    isOnSale: oldPrice !== undefined,
+                    unit: unitMatch ? unitMatch[1] : "vnt.",
+                    image: imgEl?.src || undefined,
+                    fullUrl: "https://barbora.lt" + href,
+                });
+            }
             return items;
         })
         .catch(() => [] as any[]);
@@ -162,7 +169,10 @@ async function loadPage(page: Page, url: string, attempts: number, tag: string):
         try {
             await page.goto(url, { waitUntil: "domcontentloaded", timeout: 50000 });
 
-            const ok = await page.waitForSelector("li[data-testid^='product-card']", { timeout: 15000 }).catch(() => false);
+            const consent = page.locator("button", { hasText: /leisti visus slapukus/i }).first();
+            if ((await consent.count()) > 0) await consent.click({ timeout: 3000 }).catch(() => {});
+
+            const ok = await page.waitForSelector("a[href^='/p/']", { timeout: 15000 }).catch(() => false);
             if (ok) return "ok";
 
             const info = await page
@@ -176,7 +186,10 @@ async function loadPage(page: Page, url: string, attempts: number, tag: string):
 
             if (!looksBlocked) {
                 emptyHits++;
-                if (emptyHits >= 2) return "empty";
+                if (emptyHits >= 2) {
+                    console.log(`${tag} 🔍 Tuščio puslapio turinys: "${info.title}" | ${info.text.replace(/\s+/g, " ").slice(0, 160)}`);
+                    return "empty";
+                }
                 await randomDelay(1500, 2500);
                 continue;
             }
@@ -216,7 +229,7 @@ interface CategoryState {
 
     await context.route("**/*", (route) => {
         const resourceType = route.request().resourceType();
-        if (["image", "stylesheet", "font", "media"].includes(resourceType)) route.abort();
+        if (["image", "font", "media"].includes(resourceType)) route.abort();
         else route.continue();
     });
 
@@ -252,6 +265,12 @@ interface CategoryState {
 
                 const url = state.nextPage === 1 ? state.baseUrl : `${state.baseUrl}?page=${state.nextPage}`;
                 const result = await loadPage(page, url, attempts, tag);
+
+                if (result === "empty" && state.products.length === 0 && state.nextPage === 1) {
+                    // kategorija be nė vienos prekės pirmame puslapyje = užblokuota / kitoks puslapis, o ne tikra pabaiga
+                    console.log(`${tag} ❌ ${state.name}: pirmas puslapis be prekių – laikoma užblokuota, kategorija NEBAIGTA.`);
+                    break;
+                }
 
                 if (result === "empty") {
                     console.log(`${tag} 🏁 ${state.name}: puslapis ${state.nextPage} tuščias – kategorija baigta (${state.products.length}).`);
@@ -358,6 +377,11 @@ interface CategoryState {
         console.log(`${s.done ? "✅" : "⚠️ NEBAIGTA"} ${s.name.padEnd(40)} ${String(s.products.length).padStart(5)} prekių`);
     }
     console.log(`\n🎉 Barbora baigta! Unikalių prekių: ${total} | Trukmė: ${secs}s`);
+
+    if (total === 0) {
+        console.log("\n❌ Barbora nesurinko nė vienos prekės (greičiausiai užblokuota). Senų duomenų nekeičiam.");
+        process.exitCode = 1;
+    }
 
     const bad = states.filter((s) => !s.done);
     if (bad.length > 0) {
