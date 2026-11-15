@@ -33,7 +33,9 @@ function escapeLike(term: string): string {
     return term.replace(/[\\%_]/g, (c) => "\\" + c);
 }
 
-function toProduct(row: GroupRow): Product {
+type ProductWithKey = Product & { groupKey: string };
+
+function toProduct(row: GroupRow): ProductWithKey {
     const seenStores = new Set<string>();
     const items = row.items.filter((it) => {
         if (seenStores.has(it.store)) return false;
@@ -52,6 +54,7 @@ function toProduct(row: GroupRow): Product {
     }));
 
     return {
+        groupKey: row.group_key,
         id: first.id,
         name: first.name,
         description: first.name,
