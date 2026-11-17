@@ -9,6 +9,17 @@ export const dynamic = "force-dynamic";
 const FRESH_DAYS = 5;
 const MAX_LIMIT = 100;
 const MAX_TERMS = 6;
+// Kategorijos apytiksliai nustatomos pagal normalizuotą prekės pavadinimą.
+const CATEGORIES: Record<string, string[]> = {
+    pieno: ["pien", "suris", "surelis", "jogurt", "kefyr", "varsk", "grietin", "sviest"],
+    mesa: ["mesa", "kiaulien", "vistien", "jautien", "kalakut", "desr", "kump", "farsh"],
+    zuvis: ["zuvis", "lasis", "silke", "tunas", "krevet"],
+    vaisiai: ["obuol", "banan", "apelsin", "citrin", "pomidor", "agurk", "bulv", "mork", "darzov", "vaisi"],
+    duona: ["duon", "baton", "bandel", "pyrag", "tortil"],
+    gerimai: ["vanduo", "gerimas", "sultys", "kava", "arbata", "limonad"],
+    saldumynai: ["sokolad", "saldain", "sausain", "ledai", "vafl"],
+    kruopos: ["ryzi", "kruop", "makaron", "dribsni", "miltai"],
+};
 
 interface DbItem {
     id: string;
@@ -71,6 +82,7 @@ export async function GET(request: Request) {
         const search = normalizeSearchText((searchParams.get("q") || "").slice(0, 100));
         const compareOnly = searchParams.get("compare") === "1"; // tik prekės, parduodamos ≥2 parduotuvėse
 
+        const category = searchParams.get("category") || "";
         const terms = search.split(" ").filter(Boolean).slice(0, MAX_TERMS);
 
         const params: unknown[] = [];
@@ -81,7 +93,13 @@ export async function GET(request: Request) {
             where.push(`name_search ilike $${params.length}`);
         }
 
-        // rūšiavimas: pirmiausia prekės, esančios daugiau parduotuvių, tada tos, kurios prasideda ieškomu žodžiu
+        const having: string[] = [];
+        if (compareOnly) having.push("count(distinct store) >= 2");
+        if (Object.hasOwn(CATEGORIES, category)) {
+            params.push(CATEGORIES[category].map((term) => `%${escapeLike(term)}%`));
+            having.push(`bool_or(name_search like any($${params.length}::text[]))`);
+        }
+
         let startsWithOrder = "";
         if (terms.length > 0) {
             params.push(`${escapeLike(terms[0])}%`);
@@ -105,7 +123,7 @@ export async function GET(request: Request) {
             from public.store_products
             where ${where.join(" and ")}
             group by group_key
-            ${compareOnly ? "having count(distinct store) >= 2" : ""}
+            ${having.length ? `having ${having.join(" and ")}` : ""}
             order by count(distinct store) desc, ${startsWithOrder}min(name_search) asc, group_key asc
             limit $${limitIdx} offset $${offsetIdx}
         `;

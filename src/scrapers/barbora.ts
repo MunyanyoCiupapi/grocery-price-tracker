@@ -90,7 +90,7 @@ async function scrollToBottom(page: Page) {
 async function extractItems(page: Page) {
     return page
         .evaluate(() => {
-            const items: any[] = [];
+            const items: { id: string; title: string; price: number; oldPrice: number | undefined; isOnSale: boolean; unit: string; image: string | undefined; fullUrl: string }[] = [];
             const seen = new Set<string>();
             const recs = document.querySelector("[data-testid='category-recommendations']");
 
@@ -149,7 +149,7 @@ async function extractItems(page: Page) {
             }
             return items;
         })
-        .catch(() => [] as any[]);
+        .catch(() => []);
 }
 
 type LoadResult = "ok" | "empty" | "blocked";

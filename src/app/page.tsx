@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { Product, StorePrices } from "@/types/products";
+import Link from "next/link";
+import PriceHistory from "@/components/PriceHistory";
 
 interface PaginationInfo {
   total: number;
@@ -45,6 +47,17 @@ const STORE_COLORS: Record<string, string> = {
   NORFA: "#16a34a",
 };
 const ALL_STORES = ["RIMI", "MAXIMA", "IKI", "LIDL"];
+const CATEGORIES = [
+  ["", "Visos prekės"],
+  ["pieno", "Pieno produktai"],
+  ["mesa", "Mėsa"],
+  ["zuvis", "Žuvis"],
+  ["vaisiai", "Vaisiai ir daržovės"],
+  ["duona", "Duona ir kepiniai"],
+  ["gerimai", "Gėrimai"],
+  ["saldumynai", "Saldumynai"],
+  ["kruopos", "Kruopos ir makaronai"],
+];
 const storeLabel = (s: string) => STORE_LABELS[s] ?? s;
 const storeColor = (s: string) => STORE_COLORS[s] ?? "#64748b";
 
@@ -110,6 +123,8 @@ export default function Home() {
     limit: 24,
   });
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [category, setCategory] = useState("");
+  const [history, setHistory] = useState<ProductWithKey | null>(null);
   const [compareOnly, setCompareOnly] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -122,36 +137,39 @@ export default function Home() {
   const [offersLoading, setOffersLoading] = useState(false);
   const [offersError, setOffersError] = useState<string | null>(null);
 
-  const fetchProducts = useCallback(async (page: number, query: string, compare: boolean) => {
+  const requestId = useRef(0);
+  const fetchProducts = useCallback(async (page: number, query: string, compare: boolean, selectedCategory: string) => {
+    const currentRequest = ++requestId.current;
     setLoading(true);
     setError(null);
     try {
       const res = await fetch(
-        `/api/prices?page=${page}&limit=24&q=${encodeURIComponent(query)}${compare ? "&compare=1" : ""}`,
+        `/api/prices?page=${page}&limit=24&q=${encodeURIComponent(query)}${compare ? "&compare=1" : ""}&category=${encodeURIComponent(selectedCategory)}`,
       );
-      if (!res.ok) throw new Error("Failed to fetch products");
+      if (!res.ok) throw new Error("Nepavyko užkrauti prekių.");
 
       const data = await res.json();
+      if (currentRequest !== requestId.current) return;
       setProducts(data.products);
       setPagination(data.pagination);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Klaida įvyko");
+      if (currentRequest === requestId.current) setError(err instanceof Error ? err.message : "Įvyko klaida.");
     } finally {
-      setLoading(false);
+      if (currentRequest === requestId.current) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      fetchProducts(1, searchQuery, compareOnly);
+      fetchProducts(1, searchQuery, compareOnly, category);
     }, 300); // Debounce paieškai
 
     return () => clearTimeout(timer);
-  }, [searchQuery, compareOnly, fetchProducts]);
+  }, [searchQuery, compareOnly, category, fetchProducts]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {
-      fetchProducts(newPage, searchQuery, compareOnly);
+      fetchProducts(newPage, searchQuery, compareOnly, category);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
@@ -230,9 +248,7 @@ export default function Home() {
       {/* ---------- viršus ---------- */}
       <header className="sticky top-0 z-20 bg-white/80 backdrop-blur border-b border-neutral-100">
         <div className="max-w-5xl mx-auto px-5 h-14 flex items-center justify-between">
-          <div className="font-semibold tracking-tight">
-            kainos<span className="text-emerald-600">.</span>
-          </div>
+          <Link href="/" className="font-semibold tracking-tight">kainos<span className="text-emerald-600">.</span></Link>
           <button
             onClick={() => setCartOpen(true)}
             aria-label="Atidaryti krepšelį"
@@ -276,6 +292,17 @@ export default function Home() {
           </div>
         </section>
 
+        <nav aria-label="Prekių kategorijos" className="-mx-5 mb-8 border-y border-neutral-100 px-5">
+          <div className="flex gap-1 overflow-x-auto">
+            {CATEGORIES.map(([value, label]) => (
+              <button key={value} type="button" onClick={() => setCategory(value)} aria-pressed={category === value}
+                className={`shrink-0 border-b-2 px-4 py-4 text-sm font-medium transition ${category === value ? "border-emerald-600 text-emerald-700" : "border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-900"}`}>
+                {label}
+              </button>
+            ))}
+          </div>
+        </nav>
+
         {/* ---------- prekės ---------- */}
         {!loading && !error && (
           <p className="mb-5 text-sm text-neutral-400">{pagination.total.toLocaleString("lt-LT")} prekių</p>
@@ -291,7 +318,7 @@ export default function Home() {
           <div className="py-20 text-center">
             <p className="text-red-600 mb-4">{error}</p>
             <button
-              onClick={() => fetchProducts(pagination.page, searchQuery, compareOnly)}
+              onClick={() => fetchProducts(pagination.page, searchQuery, compareOnly, category)}
               className="px-5 py-2.5 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-700 transition"
             >
               Bandyti iš naujo
@@ -365,6 +392,7 @@ export default function Home() {
                     })}
                   </ul>
 
+                  <button onClick={() => setHistory(product)} className="mt-3 self-start text-sm text-neutral-500 hover:text-neutral-900 underline underline-offset-4">Kainų istorija</button>
                   <div className="mt-4">
                     {inCart > 0 ? (
                       <div className="flex items-center justify-between rounded-full border border-neutral-900 px-1.5 py-1">
@@ -422,6 +450,8 @@ export default function Home() {
           </div>
         )}
       </main>
+
+      {history && <PriceHistory product={history} onClose={() => setHistory(null)} />}
 
       {/* Plaukiojantis mygtukas */}
       {cartCount > 0 && !cartOpen && (

@@ -131,18 +131,15 @@ const randomDelay = (min: number, max: number) =>
 interface LastMilePrc {
   p: number;
   l: number | null;
-  ltill: string | null;
 }
 
 interface LastMileProduct {
   chainId: string;
-  categoryId: string;
   unitOfMeasure: string;
   conversionMeasure: string;
   thumbUrl?: string;
   photoUrl?: string;
   prc: LastMilePrc;
-  isInStock: boolean;
   isActive: boolean;
   isApproved: boolean;
   slugs: string[];
@@ -152,8 +149,6 @@ interface LastMileProduct {
 
 interface LastMileApiWrapper {
   frontEndProduct: LastMileProduct;
-  position?: number;
-  karmaAdjustment?: any;
 }
 
 // API kartais sumažina leistiną limit (klaida "search_limit_too_large") – tada automatiškai mažinam.
@@ -207,7 +202,7 @@ async function fetchProducts(categoryIds: string[], sort?: string, attempt = 1):
       throw new Error(`HTTP ${res.status}${body ? ` – ${body}` : ""}`);
     }
 
-    const json: any = await res.json();
+    const json = await res.json() as { data?: LastMileApiWrapper[]; items?: LastMileApiWrapper[]; products?: LastMileApiWrapper[]; count?: number } | LastMileApiWrapper[];
 
     const items: LastMileApiWrapper[] = Array.isArray(json)
       ? json
@@ -219,7 +214,7 @@ async function fetchProducts(categoryIds: string[], sort?: string, attempt = 1):
             ? json.products
             : [];
 
-    return { items, count: typeof json?.count === "number" ? json.count : 0 };
+    return { items, count: !Array.isArray(json) && typeof json?.count === "number" ? json.count : 0 };
   } catch (err) {
     if (attempt <= 3) {
       console.warn(`   ⚠️ Užklausa nepavyko (bandymas ${attempt}/3): ${(err as Error).message}. Bandoma iš naujo...`);

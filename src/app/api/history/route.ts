@@ -1,64 +1,35 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { getPool } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-interface HistoryRow {
-  date: string;
-  store: string;
-  price: string;
-}
-interface ProductRow {
-  id: string;
-  store: string;
-  price: string;
-}
-
-/** Istorija yra konkrečios prekės konkrečioje parduotuvėje, ne sujungtos grupės vidurkis. */
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const groupKey = searchParams.get("groupKey") || "";
-  if (!groupKey || groupKey.length > 300) {
-    return NextResponse.json({ error: "Nenurodyta prekė" }, { status: 400 });
-  }
-
+  const key = new URL(request.url).searchParams.get("key");
+  if (!key || key.length > 500) return NextResponse.json({ error: "Nenurodyta prekė" }, { status: 400 });
   try {
-    const pool = getPool();
-    const { rows: products } = await pool.query<ProductRow>(
-      `select distinct on (store) id, store, price
-         from public.store_products
-        where group_key = $1 and last_seen > now() - interval '5 days'
-        order by store, price asc`,
-      [groupKey],
+    const current = await getPool().query<{ store: string; price: string; last_seen: Date }>(
+      `select distinct on (store) store, price, last_seen
+       from public.store_products
+       where group_key = $1 and last_seen > now() - interval '5 days'
+       order by store, price asc, id asc`, [key],
     );
-    if (!products.length) return NextResponse.json({ history: [], current: [] });
-
-    const ids = products.map((p) => p.id);
-    const stores = new Map(products.map((p) => [p.id, p.store]));
-    // price_history įrašai kuriami DB trigeriu, kai pasikeičia kaina.
-    // Atsakymą ribojame iki 30 dienų ir daugiausia 1000 įrašų.
-    const { rows } = await pool.query<{ product_id: string; price: string; recorded_at: string }>(
-      `select product_id, price, recorded_at
-         from public.price_history
-        where product_id = any($1::text[])
-          and recorded_at >= now() - interval '30 days'
-        order by recorded_at asc
-        limit 1000`,
-      [ids],
+    const { rows } = await getPool().query<{ store: string; price: string; recorded_at: Date }>(
+      `select p.store, h.price, h.recorded_at
+       from public.price_history h join (
+         select distinct on (store) id, store from public.store_products
+         where group_key = $1 and last_seen > now() - interval '5 days'
+         order by store, price asc, id asc
+       ) p on p.id = h.product_id
+       where h.recorded_at >= now() - interval '1 year'
+       order by h.recorded_at asc`, [key],
     );
-
-    const history: HistoryRow[] = rows.map((r) => ({
-      date: r.recorded_at,
-      store: stores.get(r.product_id) || "",
-      price: Number(r.price).toFixed(2),
-    }));
     return NextResponse.json({
-      history,
-      current: products.map((p) => ({ store: p.store, price: Number(p.price) })),
+      points: rows.map((row) => ({ store: row.store, price: Number(row.price), date: row.recorded_at })),
+      current: current.rows.map((row) => ({ store: row.store, price: Number(row.price), date: row.last_seen })),
     });
   } catch (error) {
-    console.error("Kainų istorijos klaida:", error);
+    console.error("Klaida skaitant kainų istoriją:", error);
     return NextResponse.json({ error: "Nepavyko gauti kainų istorijos" }, { status: 500 });
   }
 }
