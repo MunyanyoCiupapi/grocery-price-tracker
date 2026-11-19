@@ -79,6 +79,21 @@ const VARIANT_STEMS = new Set([
 // tarpusavyje nesuderinami žodžiai: jei viena pusė turi vieną, o kita kitą – tai skirtingos prekės
 // (baltasis / raudonasis / rožinis vynas, pieninis / juodasis šokoladas, žaliosios / juodosios alyvuogės)
 const EXCLUSIVE_STEMS = new Set(["balt", "raud", "rozi", "zali", "juod", "pien"]);
+// Tą patį saldumyną parduotuvės gali apibūdinti kaip vaflinį, šokoladinį,
+// batonėlį arba saldainius. Kitų produkto aprašų ši taisyklė neignoruoja.
+const CONFECTIONERY_DESCRIPTORS = new Set(["vafl", "soko", "bato", "sald", "pade", "mini", "whit"]);
+const CONFECTIONERY_FORMS = new Set(["bato", "sald"]);
+const FLAVOR_STEMS: Array<[string, string[]]> = [
+    ["apelsin", ["apels", "orange"]], ["persik", ["persik", "peach"]],
+    ["citrin", ["citrin", "lemon"]], ["greipfrut", ["greip", "grapefruit"]],
+    ["brask", ["brask", "strawberry"]], ["aviet", ["aviet", "raspberry"]],
+    ["vysn", ["vysn", "cherry"]], ["obuol", ["obuol", "apple"]],
+    ["banan", ["banan"]], ["kriaus", ["kriaus", "pear"]],
+    ["mango", ["mang"]], ["melyn", ["melyn", "blueberry"]],
+    ["zem", ["zemuog"]], ["aron", ["aronij"]], ["spanguol", ["spanguol", "cranberry"]],
+    ["mandarin", ["mandarin"]], ["ananas", ["ananas", "pineapple"]],
+    ["vanil", ["vanil"]], ["kokos", ["kokos", "coconut"]],
+];
 const normExclusive = (t: string) => (t === "raus" ? "rozi" : t); // rausvasis = rožinis
 
 /** primityvus lietuvių k. stem'as: žodžiai nuo 5 raidžių sutrumpinami iki 4 (sūriu/sūrio -> suri) */
@@ -98,6 +113,8 @@ interface Parsed {
     nums: Set<string>;
     words: Set<string>; // pilni (nestem'inti) žodžiai
     quals: Set<string>; // "su druska" / "be cukraus" tipo priedai: "su:drus", "be:cuk"
+    flavors: Set<string>;
+    lactoseFree: boolean;
 }
 
 /** Prekės ženklas = žodžiai, parašyti DIDŽIOSIOMIS (jei ne visas pavadinimas didžiosiomis). */
@@ -184,7 +201,12 @@ function parse(name: string, unit?: string | null): Parsed {
     }
 
     const words = new Set(tokens.filter((t) => !/\d/.test(t)));
-    return { key, sizeKey, sizeKeys, brand, brandSet, all, rest, pct, nums, quals, words };
+    const nameWords = normalizeSearchText(name).split(" ");
+    const flavors = new Set(FLAVOR_STEMS.filter(([, variants]) =>
+        nameWords.some((word) => variants.some((variant) => word.startsWith(variant))),
+    ).map(([flavor]) => flavor));
+    const lactoseFree = /\b(?:be\s+laktoz|nelaktoz|laktozes\s+nera)/.test(normalizeSearchText(name));
+    return { key, sizeKey, sizeKeys, brand, brandSet, all, rest, pct, nums, quals, words, flavors, lactoseFree };
 }
 
 function setsEqual<T>(a: Set<T>, b: Set<T>): boolean {
@@ -275,6 +297,8 @@ function matchScore(a: Parsed, b: Parsed, sameStore = false): number {
     if (pcsA.length > 0 && pcsB.length > 0 && !pcsA.some((k) => pcsB.includes(k))) return 0;
     if (!brandMatches(a, b)) return 0;
     if (!qualsOk(a, b, sameStore)) return 0;
+    if (a.flavors.size && b.flavors.size && !setsEqual(a.flavors, b.flavors)) return 0;
+    if (a.lactoseFree !== b.lactoseFree) return 0;
 
     // skirtingi riebumo % arba skaičiai -> skirtingos prekės
     if (a.pct.size > 0 && b.pct.size > 0 && !setsEqual(a.pct, b.pct)) return 0;
@@ -302,6 +326,9 @@ function matchScore(a: Parsed, b: Parsed, sameStore = false): number {
     // identiškas, bent 3 žodžių ženklas/linija ("DOVE FRUITY NOURISH", "COLGATE ADVANCE WHITE PURPLE") + tas pats dydis:
     // aprašomieji žodžiai (želė / gelis, skutimosi / skustuvo) nebeturi lemiamos reikšmės
     const strongBrand = a.brand.length >= 3 && a.brand.length === b.brand.length;
+    const genericConfectionery = a.brand.length >= 2 && b.brand.length >= 2 &&
+        [restA, restB].every((words) => [...words].some((word) => CONFECTIONERY_FORMS.has(word)) &&
+            [...words].every((word) => CONFECTIONERY_DESCRIPTORS.has(word)));
 
     // vienoje pusėje papildomų žodžių nėra – prekės ženklas + dydis jau gana tikslus
     if (restA.size === 0 && restB.size === 0) return 1;
@@ -320,7 +347,7 @@ function matchScore(a: Parsed, b: Parsed, sameStore = false): number {
             }
         }
     }
-    if (shared === 0) return strongBrand ? STRONG_BRAND_SCORE : 0;
+    if (shared === 0) return strongBrand || genericConfectionery ? STRONG_BRAND_SCORE : 0;
 
     const unmatchedA = restA.size - shared;
     const unmatchedB = restB.size - shared;
@@ -329,7 +356,9 @@ function matchScore(a: Parsed, b: Parsed, sameStore = false): number {
     // abiejose pusėse yra "svetimų" žodžių (pvz. skirtingi skoniai: agrastų / vyšnių) – jungiam tik jei labai panašu
     // tos pačios parduotuvės dvi prekės: jungiam tik kai viena pavadinimo žodžių aibė yra kitos dalis
     if (sameStore && unmatchedA > 0 && unmatchedB > 0) return 0;
-    if (unmatchedA > 0 && unmatchedB > 0 && jaccard <= 0.5) return strongBrand ? STRONG_BRAND_SCORE : 0;
+    if (unmatchedA > 0 && unmatchedB > 0 && jaccard <= 0.5) {
+        return strongBrand || genericConfectionery ? STRONG_BRAND_SCORE : 0;
+    }
 
     if (jaccard >= MIN_SCORE) return jaccard;
     return strongBrand ? STRONG_BRAND_SCORE : 0;
@@ -375,6 +404,8 @@ export function clusterProducts(inputs: MatchInput[]): MatchResult {
     const clusterMembers: number[][] = nodes.map((_, i) => [i]);
     // klasterio riebumo/stiprumo % reikšmės: klasteryje negali atsirasti dvi skirtingos (apsauga nuo sujungimo per prekę be %)
     const clusterPct = nodes.map((n) => new Set(n.parsed.pct));
+    const clusterFlavors = nodes.map((n) => new Set(n.parsed.flavors));
+    const clusterLactoseFree = nodes.map((n) => n.parsed.lactoseFree);
     const find = (x: number): number => {
         while (parent[x] !== x) {
             parent[x] = parent[parent[x]];
@@ -477,10 +508,13 @@ export function clusterProducts(inputs: MatchInput[]): MatchResult {
 
         const pctUnion = new Set([...clusterPct[ra], ...clusterPct[rb]]);
         if (pctUnion.size > 1) continue;
+        if (clusterFlavors[ra].size && clusterFlavors[rb].size && !setsEqual(clusterFlavors[ra], clusterFlavors[rb])) continue;
+        if (clusterLactoseFree[ra] !== clusterLactoseFree[rb]) continue;
 
         parent[rb] = ra;
         clusterMembers[ra].push(...clusterMembers[rb]);
         clusterPct[ra] = pctUnion;
+        clusterFlavors[ra] = new Set([...clusterFlavors[ra], ...clusterFlavors[rb]]);
         for (const s of clusterStores[rb]) clusterStores[ra].add(s);
 
         fuzzy.push({

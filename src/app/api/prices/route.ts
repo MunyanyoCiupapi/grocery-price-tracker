@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { Product, StorePrices } from "@/types/products";
 import { getPool } from "@/lib/db";
 import { normalizeSearchText } from "@/lib/groupKey";
+import { CATEGORY_OPTIONS } from "@/lib/sourceCategories";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -9,17 +10,6 @@ export const dynamic = "force-dynamic";
 const FRESH_DAYS = 5;
 const MAX_LIMIT = 100;
 const MAX_TERMS = 6;
-// Kategorijos apytiksliai nustatomos pagal normalizuotą prekės pavadinimą.
-const CATEGORIES: Record<string, string[]> = {
-    pieno: ["pien", "suris", "surelis", "jogurt", "kefyr", "varsk", "grietin", "sviest"],
-    mesa: ["mesa", "kiaulien", "vistien", "jautien", "kalakut", "desr", "kump", "farsh"],
-    zuvis: ["zuvis", "lasis", "silke", "tunas", "krevet"],
-    vaisiai: ["obuol", "banan", "apelsin", "citrin", "pomidor", "agurk", "bulv", "mork", "darzov", "vaisi"],
-    duona: ["duon", "baton", "bandel", "pyrag", "tortil"],
-    gerimai: ["vanduo", "gerimas", "sultys", "kava", "arbata", "limonad"],
-    saldumynai: ["sokolad", "saldain", "sausain", "ledai", "vafl"],
-    kruopos: ["ryzi", "kruop", "makaron", "dribsni", "miltai"],
-};
 
 interface DbItem {
     id: string;
@@ -88,16 +78,21 @@ export async function GET(request: Request) {
         const params: unknown[] = [];
         const where: string[] = [`last_seen > now() - interval '${FRESH_DAYS} days'`];
 
+        const searchConditions: string[] = [];
         for (const term of terms) {
             params.push(`%${escapeLike(term)}%`);
-            where.push(`name_search ilike $${params.length}`);
+            searchConditions.push(`name_search ilike $${params.length}`);
         }
 
         const having: string[] = [];
+        // Ieškome pagal bent vienos parduotuvės pavadinimą, bet išlaikome visos grupės pasiūlymus.
+        if (searchConditions.length) having.push(`bool_or(${searchConditions.join(" and ")})`);
         if (compareOnly) having.push("count(distinct store) >= 2");
-        if (Object.hasOwn(CATEGORIES, category)) {
-            params.push(CATEGORIES[category].map((term) => `%${escapeLike(term)}%`));
-            having.push(`bool_or(name_search like any($${params.length}::text[]))`);
+        if (category === "kitos") {
+            having.push("not bool_or(cardinality(category_codes) > 0)");
+        } else if (category && CATEGORY_OPTIONS.some((option) => option.id === category)) {
+            params.push(category);
+            having.push(`bool_or($${params.length} = any(category_codes))`);
         }
 
         let startsWithOrder = "";

@@ -6,6 +6,8 @@ export interface Product {
     description: string;
     prices: StorePrices[];
     imageUrl?: string;
+    categoryCodes?: string[];
+    sourceCategoryId?: string;
 };
 
 export interface StorePrices {

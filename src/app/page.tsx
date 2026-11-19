@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { Product, StorePrices } from "@/types/products";
 import Link from "next/link";
 import PriceHistory from "@/components/PriceHistory";
+import { CATEGORY_OPTIONS } from "@/lib/sourceCategories";
 
 interface PaginationInfo {
   total: number;
@@ -47,17 +48,6 @@ const STORE_COLORS: Record<string, string> = {
   NORFA: "#16a34a",
 };
 const ALL_STORES = ["RIMI", "MAXIMA", "IKI", "LIDL"];
-const CATEGORIES = [
-  ["", "Visos prekės"],
-  ["pieno", "Pieno produktai"],
-  ["mesa", "Mėsa"],
-  ["zuvis", "Žuvis"],
-  ["vaisiai", "Vaisiai ir daržovės"],
-  ["duona", "Duona ir kepiniai"],
-  ["gerimai", "Gėrimai"],
-  ["saldumynai", "Saldumynai"],
-  ["kruopos", "Kruopos ir makaronai"],
-];
 const storeLabel = (s: string) => STORE_LABELS[s] ?? s;
 const storeColor = (s: string) => STORE_COLORS[s] ?? "#64748b";
 
@@ -244,15 +234,15 @@ export default function Home() {
   const maxTotal = Math.max(1, ...totals.perStore.map((s) => s.total));
 
   return (
-    <div className="min-h-screen bg-white text-neutral-900 antialiased">
+    <div className="min-h-screen bg-[#f8f9f6] text-[#19251d] antialiased">
       {/* ---------- viršus ---------- */}
-      <header className="sticky top-0 z-20 bg-white/80 backdrop-blur border-b border-neutral-100">
-        <div className="max-w-5xl mx-auto px-5 h-14 flex items-center justify-between">
-          <Link href="/" className="font-semibold tracking-tight">kainos<span className="text-emerald-600">.</span></Link>
+      <header className="sticky top-0 z-20 border-b border-neutral-200/70 bg-white/90 backdrop-blur">
+        <div className="max-w-6xl mx-auto px-5 h-[72px] flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 text-xl font-semibold tracking-tight"><span aria-hidden="true" className="grid h-9 w-9 place-items-center rounded-[13px] bg-[#173d2d] text-white text-base">k</span>kainos<span className="-ml-3 text-emerald-600">.</span></Link>
           <button
             onClick={() => setCartOpen(true)}
             aria-label="Atidaryti krepšelį"
-            className="flex items-center gap-2 text-sm font-medium px-3.5 py-1.5 rounded-full border border-neutral-200 hover:border-neutral-900 transition"
+            className="flex items-center gap-2.5 rounded-full border border-[#dce5dc] bg-white px-4 py-2 text-sm font-medium transition hover:border-emerald-700 hover:text-emerald-800"
           >
             Krepšelis
             <span
@@ -266,37 +256,61 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-5">
+      <main className="max-w-6xl mx-auto px-5">
         {/* ---------- paieška ---------- */}
-        <section className="pt-14 pb-10 md:pt-20 md:pb-12">
-          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.05] max-w-xl">
-            Pigiausias krepšelis. <span className="text-neutral-400">Viena parduotuvė.</span>
+        <section className="relative mt-5 overflow-hidden rounded-[28px] bg-[#e8f1e6] md:mt-8 md:rounded-[36px]">
+          <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-32 h-80 w-80 rounded-full border border-[#b8d1bb]/70 sm:h-[440px] sm:w-[440px]" />
+          <div aria-hidden="true" className="pointer-events-none absolute -right-12 -top-24 h-64 w-64 rounded-full border border-[#b8d1bb]/60 sm:h-[360px] sm:w-[360px]" />
+          <div className="relative grid gap-10 px-6 py-10 sm:px-10 md:grid-cols-[1fr_270px] md:items-end md:gap-12 md:px-12 md:py-12 lg:grid-cols-[1fr_300px]">
+          <div>
+          <p className="mb-5 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#3a6b4e]"><span className="h-2 w-2 rounded-full bg-emerald-600" />Mažiau paieškų. Daugiau aiškumo.</p>
+          <h1 className="max-w-2xl text-[2.65rem] font-semibold leading-[1.06] tracking-[-0.045em] text-[#173d2d] sm:text-5xl lg:text-[3.6rem]">
+            Geresnės kainos prasideda <span className="text-[#6a9273]">nuo palyginimo.</span>
           </h1>
-          <div className="mt-8 max-w-xl">
+          <p className="mt-5 max-w-md text-[15px] leading-7 text-[#536b59]">Ieškok prekių, palygink parduotuves ir susidėk savo pirkinių krepšelį vienoje vietoje.</p>
+          <div className="mt-7 max-w-xl">
+            <label htmlFor="product-search" className="sr-only">Ieškoti prekės</label>
+            <div className="relative">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-400"><circle cx="11" cy="11" r="7" /><path d="m16 16 4 4" strokeLinecap="round" /></svg>
             <input
+              id="product-search"
               type="text"
-              placeholder="Ieškoti prekės…"
+              placeholder="Ko ieškai? Pvz., pieno ar kavos"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3.5 text-[15px] outline-none placeholder:text-neutral-400 focus:bg-white focus:border-neutral-900 transition"
+              className="w-full rounded-2xl border border-white bg-white py-[18px] pl-12 pr-4 text-[15px] text-neutral-900 shadow-[0_10px_30px_rgba(28,65,39,0.07)] outline-none placeholder:text-neutral-400 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 transition"
             />
-            <label className="mt-3 inline-flex items-center gap-2 text-sm text-neutral-500 cursor-pointer select-none">
+            </div>
+            <label className="mt-4 inline-flex items-center gap-2.5 text-sm text-[#526b58] cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={compareOnly}
                 onChange={(e) => setCompareOnly(e.target.checked)}
-                className="accent-neutral-900"
+                className="h-4 w-4 accent-emerald-700"
               />
               Tik prekės, kurias galima palyginti
             </label>
           </div>
+          </div>
+          <div className="relative rounded-[24px] bg-[#173d2d] p-6 text-white shadow-[0_18px_40px_rgba(26,66,41,0.14)] sm:p-7">
+            <div aria-hidden="true" className="absolute right-5 top-5 grid h-9 w-9 place-items-center rounded-full border border-white/20 text-lg text-[#b9ddbd]">↗</div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#a8cbae]">Kaip tai veikia</p>
+            <p className="mt-5 max-w-[210px] text-xl font-medium leading-snug tracking-tight">Nuo paieškos iki krepšelio – paprastai.</p>
+            <ol className="mt-6 space-y-3 border-t border-white/15 pt-5 text-sm text-[#e0eee1]">
+              <li className="flex gap-3"><span className="text-[#91b99a]">01</span> Surask norimas prekes</li>
+              <li className="flex gap-3"><span className="text-[#91b99a]">02</span> Palygink jų kainas</li>
+              <li className="flex gap-3"><span className="text-[#91b99a]">03</span> Sudaryk krepšelį</li>
+            </ol>
+          </div>
+          </div>
         </section>
 
-        <nav aria-label="Prekių kategorijos" className="-mx-5 mb-8 border-y border-neutral-100 px-5">
-          <div className="flex gap-1 overflow-x-auto">
-            {CATEGORIES.map(([value, label]) => (
+        <nav aria-label="Prekių kategorijos" className="mb-9 mt-11">
+          <div className="mb-4 flex items-baseline justify-between gap-4"><div><p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6b9074]">Atrask</p><h2 className="text-xl font-semibold tracking-tight">Ko šiandien ieškai?</h2></div><span className="hidden text-xs text-neutral-400 sm:inline">Pasirink kategoriją</span></div>
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            {CATEGORY_OPTIONS.map(({ id: value, label }) => (
               <button key={value} type="button" onClick={() => setCategory(value)} aria-pressed={category === value}
-                className={`shrink-0 border-b-2 px-4 py-4 text-sm font-medium transition ${category === value ? "border-emerald-600 text-emerald-700" : "border-transparent text-neutral-500 hover:border-neutral-300 hover:text-neutral-900"}`}>
+                className={`shrink-0 rounded-full border px-4 py-2.5 text-sm font-medium transition ${category === value ? "border-[#173d2d] bg-[#173d2d] text-white" : "border-[#e2e9df] bg-white text-[#55635a] hover:border-emerald-500 hover:text-emerald-800"}`}>
                 {label}
               </button>
             ))}
@@ -305,7 +319,7 @@ export default function Home() {
 
         {/* ---------- prekės ---------- */}
         {!loading && !error && (
-          <p className="mb-5 text-sm text-neutral-400">{pagination.total.toLocaleString("lt-LT")} prekių</p>
+          <div className="mb-5 flex items-baseline justify-between gap-4 border-t border-[#e6ebe3] pt-7"><div><p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6b9074]">Palygink</p><h2 className="text-xl font-semibold tracking-tight">Atrask prekes</h2></div><p className="text-sm text-neutral-400">{pagination.total.toLocaleString("lt-LT")} prekių</p></div>
         )}
 
         {loading ? (
@@ -327,15 +341,15 @@ export default function Home() {
         ) : products.length === 0 ? (
           <p className="text-center text-neutral-400 py-20">Prekių nerasta.</p>
         ) : (
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {products.map((product) => {
               const inCart = cart[product.groupKey]?.qty ?? 0;
               const cheapest = product.prices[0];
               const priciest = product.prices[product.prices.length - 1];
               const diff = priciest.price - cheapest.price;
               return (
-                <li key={product.groupKey} className="flex flex-col">
-                  <div className="relative grid place-items-center h-52 rounded-2xl bg-neutral-50 overflow-hidden">
+                <li key={product.groupKey} className="flex flex-col rounded-[24px] border border-[#e8ede6] bg-white p-4 shadow-[0_2px_14px_rgba(24,39,28,0.025)] transition hover:border-emerald-200 hover:shadow-[0_12px_35px_rgba(24,39,28,0.07)]">
+                  <div className="relative grid place-items-center h-52 rounded-[18px] bg-[#f5f7f2] overflow-hidden">
                     {product.imageUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -348,15 +362,15 @@ export default function Home() {
                       <span className="text-neutral-300 text-sm">Nėra nuotraukos</span>
                     )}
                     {product.prices.length > 1 && diff > 0.004 && (
-                      <span className="absolute top-3 left-3 rounded-full bg-white text-emerald-700 text-xs font-medium px-2.5 py-1 border border-emerald-100">
-                        −{eur(diff)}
+                      <span className="absolute top-3 left-3 rounded-full bg-white text-[#327147] text-xs font-semibold px-3 py-1.5 shadow-sm">
+                        Skirtumas {eur(diff)}
                       </span>
                     )}
                   </div>
 
-                  <h2 className="mt-4 text-[15px] font-medium leading-snug line-clamp-2 min-h-[2.6em]">
+                  <h3 className="mt-4 text-[15px] font-semibold leading-snug line-clamp-2 min-h-[2.6em]">
                     {product.name}
-                  </h2>
+                  </h3>
 
                   <ul className="mt-3 divide-y divide-neutral-100 border-y border-neutral-100">
                     {product.prices.map((priceItem: StorePrices, i: number) => {
@@ -392,8 +406,8 @@ export default function Home() {
                     })}
                   </ul>
 
-                  <button onClick={() => setHistory(product)} className="mt-3 self-start text-sm text-neutral-500 hover:text-neutral-900 underline underline-offset-4">Kainų istorija</button>
-                  <div className="mt-4">
+                  <button onClick={() => setHistory(product)} className="mt-4 self-start text-sm font-medium text-emerald-700 hover:text-emerald-900 underline decoration-emerald-200 underline-offset-4">Kainų istorija <span aria-hidden="true">↗</span></button>
+                  <div className="mt-auto pt-4">
                     {inCart > 0 ? (
                       <div className="flex items-center justify-between rounded-full border border-neutral-900 px-1.5 py-1">
                         <button
@@ -415,7 +429,7 @@ export default function Home() {
                     ) : (
                       <button
                         onClick={() => addToCart(product)}
-                        className="w-full py-2.5 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-700 active:scale-[.98] transition"
+                        className="w-full py-3 rounded-full bg-[#173d2d] text-white text-sm font-medium hover:bg-[#285a3e] active:scale-[.98] transition"
                       >
                         Į krepšelį
                       </button>

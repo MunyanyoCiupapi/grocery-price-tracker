@@ -2,6 +2,26 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Kategorijų duomenys
+
+Kategorijos priskiriamos pagal surinkimo šaltinio kategorijas. IKI kategorijų
+hierarchija atnaujinama iš „LastMile“, o „Rimi“ ir „Barboros“ – pagal jų
+surinkimui naudojamų kategorijų failus. Prekės be patikimos kategorijos lieka
+„Kitos ir nesuskirstytos“; `Lidl` bendras failas kategorijų neturi.
+
+Prieš naudojant naują kategorijų filtrą esamoje duomenų bazėje, vieną kartą
+reikia pritaikyti migraciją ir įrašyti kategorijas iš turimų JSON failų:
+
+```bash
+npx tsx src/scrapers/sync-db.ts --categories-only --migrate-categories
+```
+
+Ši komanda pakeičia duomenų bazės schemą ir kategorijų duomenis, bet neatnaujina
+kainų ir neperskaičiuoja prekių grupių. IKI failus prieš tai galima atnaujinti
+komanda `npx tsx src/scrapers/iki.ts`. Surinkėjas prašo visų puslapių ir lygina
+rezultatą su šaltinio nurodytu skaičiumi. Jei trūksta prekių, jis grąžina
+klaidos kodą, kad automatinis darbas netrintų senų prekių.
+
 First, run the development server:
 
 ```bash
