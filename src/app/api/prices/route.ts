@@ -95,10 +95,10 @@ export async function GET(request: Request) {
             having.push(`bool_or($${params.length} = any(category_codes))`);
         }
 
-        let startsWithOrder = "";
+        let startsWithSelect = "false";
         if (terms.length > 0) {
             params.push(`${escapeLike(terms[0])}%`);
-            startsWithOrder = `bool_or(name_search like $${params.length}) desc, `;
+            startsWithSelect = `bool_or(name_search like $${params.length})`;
         }
 
         params.push(limit, (page - 1) * limit);
@@ -106,21 +106,30 @@ export async function GET(request: Request) {
         const offsetIdx = params.length;
 
         const sql = `
-            select
-                group_key,
-                count(*) over() as total,
-                count(distinct store) as stores,
-                json_agg(json_build_object(
-                    'id', id, 'name', name, 'store', store, 'price', price,
-                    'oldPrice', old_price, 'isOnSale', is_on_sale, 'unit', unit,
-                    'url', url, 'imageUrl', image_url
-                ) order by price asc) as items
-            from public.store_products
-            where ${where.join(" and ")}
-            group by group_key
-            ${having.length ? `having ${having.join(" and ")}` : ""}
-            order by count(distinct store) desc, ${startsWithOrder}min(name_search) asc, group_key asc
-            limit $${limitIdx} offset $${offsetIdx}
+            with grouped as (
+                select group_key, count(distinct store) as stores,
+                       min(name_search) as sort_name, ${startsWithSelect} as starts_with
+                from public.store_products
+                where ${where.join(" and ")}
+                group by group_key
+                ${having.length ? `having ${having.join(" and ")}` : ""}
+            ), selected as (
+                select *, count(*) over() as total
+                from grouped
+                order by stores desc, starts_with desc, sort_name asc, group_key asc
+                limit $${limitIdx} offset $${offsetIdx}
+            )
+            select selected.group_key, selected.total, selected.stores,
+                (select json_agg(json_build_object(
+                    'id', p.id, 'name', p.name, 'store', p.store, 'price', p.price,
+                    'oldPrice', p.old_price, 'isOnSale', p.is_on_sale, 'unit', p.unit,
+                    'url', p.url, 'imageUrl', p.image_url
+                ) order by p.price asc)
+                from public.store_products p
+                where p.group_key = selected.group_key
+                  and p.last_seen > now() - interval '${FRESH_DAYS} days') as items
+            from selected
+            order by selected.stores desc, selected.starts_with desc, selected.sort_name asc, selected.group_key asc
         `;
 
         const { rows } = await getPool().query<GroupRow>(sql, params);
