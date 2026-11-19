@@ -113,10 +113,14 @@ export default function Home() {
     limit: 24,
   });
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const isSearching = searchQuery.trim().length > 0;
   const [category, setCategory] = useState("");
+  const [showAllCategories, setShowAllCategories] = useState(false);
   const [history, setHistory] = useState<ProductWithKey | null>(null);
   const [compareOnly, setCompareOnly] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [loadMoreError, setLoadMoreError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // krepšelis
@@ -128,10 +132,23 @@ export default function Home() {
   const [offersError, setOffersError] = useState<string | null>(null);
 
   const requestId = useRef(0);
+  const loadingMoreRef = useRef(false);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const loadedFilters = useRef("");
   const fetchProducts = useCallback(async (page: number, query: string, compare: boolean, selectedCategory: string) => {
+    const append = page > 1;
+    if (append && loadingMoreRef.current) return;
+    if (append) loadingMoreRef.current = true;
     const currentRequest = ++requestId.current;
-    setLoading(true);
-    setError(null);
+    if (append) {
+      setLoadingMore(true);
+      setLoadMoreError(null);
+    } else {
+      setLoading(true);
+      setLoadingMore(false);
+      setError(null);
+      setLoadMoreError(null);
+    }
     try {
       const res = await fetch(
         `/api/prices?page=${page}&limit=24&q=${encodeURIComponent(query)}${compare ? "&compare=1" : ""}&category=${encodeURIComponent(selectedCategory)}`,
@@ -140,29 +157,51 @@ export default function Home() {
 
       const data = await res.json();
       if (currentRequest !== requestId.current) return;
-      setProducts(data.products);
+      loadedFilters.current = JSON.stringify([query, compare, selectedCategory]);
+      setProducts((current) => {
+        if (!append) return data.products;
+        const existing = new Set(current.map((product) => product.groupKey));
+        return [...current, ...data.products.filter((product: ProductWithKey) => !existing.has(product.groupKey))];
+      });
       setPagination(data.pagination);
     } catch (err) {
-      if (currentRequest === requestId.current) setError(err instanceof Error ? err.message : "Įvyko klaida.");
+      if (currentRequest === requestId.current) {
+        const message = err instanceof Error ? err.message : "Įvyko klaida.";
+        if (append) setLoadMoreError(message);
+        else setError(message);
+      }
     } finally {
-      if (currentRequest === requestId.current) setLoading(false);
+      if (currentRequest === requestId.current) {
+        if (append) {
+          loadingMoreRef.current = false;
+          setLoadingMore(false);
+        } else setLoading(false);
+      }
     }
   }, []);
 
   useEffect(() => {
+    const activeRequest = requestId;
     const timer = setTimeout(() => {
       fetchProducts(1, searchQuery, compareOnly, category);
-    }, 300); // Debounce paieškai
+    }, 180); // Trumpa pauzė, kad rašant nebūtų siunčiama užklausa po kiekvienos raidės.
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      activeRequest.current++;
+      loadingMoreRef.current = false;
+    };
   }, [searchQuery, compareOnly, category, fetchProducts]);
 
-  const handlePageChange = (newPage: number) => {
-    if (newPage >= 1 && newPage <= pagination.totalPages) {
-      fetchProducts(newPage, searchQuery, compareOnly, category);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
+  useEffect(() => {
+    const target = loadMoreRef.current;
+    if (!target || loading || loadingMore || error || loadMoreError || pagination.page >= pagination.totalPages || loadedFilters.current !== JSON.stringify([searchQuery, compareOnly, category])) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) fetchProducts(pagination.page + 1, searchQuery, compareOnly, category);
+    }, { rootMargin: "400px" });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [loading, loadingMore, error, loadMoreError, pagination.page, pagination.totalPages, searchQuery, compareOnly, category, fetchProducts]);
 
   // krepšelis nuskaitomas tik naršyklėje po pirmo atvaizdavimo (kad nesutaptų su serverio HTML)
   /* eslint-disable react-hooks/set-state-in-effect */
@@ -258,17 +297,17 @@ export default function Home() {
 
       <main className="max-w-6xl mx-auto px-5">
         {/* ---------- paieška ---------- */}
-        <section className="relative mt-5 overflow-hidden rounded-[28px] bg-[#e8f1e6] md:mt-8 md:rounded-[36px]">
+        <section className={`relative overflow-hidden rounded-[28px] bg-[#e8f1e6] md:rounded-[36px] ${isSearching ? "mt-4" : "mt-5 md:mt-8"}`}>
           <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-32 h-80 w-80 rounded-full border border-[#b8d1bb]/70 sm:h-[440px] sm:w-[440px]" />
           <div aria-hidden="true" className="pointer-events-none absolute -right-12 -top-24 h-64 w-64 rounded-full border border-[#b8d1bb]/60 sm:h-[360px] sm:w-[360px]" />
-          <div className="relative grid gap-10 px-6 py-10 sm:px-10 md:grid-cols-[1fr_270px] md:items-end md:gap-12 md:px-12 md:py-12 lg:grid-cols-[1fr_300px]">
+          <div className={`relative grid px-6 transition-[padding,gap] duration-500 ease-in-out motion-reduce:transition-none sm:px-10 md:grid-cols-[1fr_270px] md:items-end md:px-12 lg:grid-cols-[1fr_300px] ${isSearching ? "gap-0 py-5 md:gap-12 md:py-6" : "gap-10 py-10 md:gap-12 md:py-12"}`}>
           <div>
-          <p className="mb-5 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#3a6b4e]"><span className="h-2 w-2 rounded-full bg-emerald-600" />Mažiau paieškų. Daugiau aiškumo.</p>
+          <div aria-hidden={isSearching} inert={isSearching} className={`grid transition-[grid-template-rows,opacity] duration-500 ease-in-out motion-reduce:transition-none ${isSearching ? "grid-rows-[0fr] opacity-0" : "grid-rows-[1fr] opacity-100"}`}><div className="overflow-hidden"><p className="mb-5 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#3a6b4e]"><span className="h-2 w-2 rounded-full bg-emerald-600" />Mažiau paieškų. Daugiau aiškumo.</p>
           <h1 className="max-w-2xl text-[2.65rem] font-semibold leading-[1.06] tracking-[-0.045em] text-[#173d2d] sm:text-5xl lg:text-[3.6rem]">
             Geresnės kainos prasideda <span className="text-[#6a9273]">nuo palyginimo.</span>
           </h1>
-          <p className="mt-5 max-w-md text-[15px] leading-7 text-[#536b59]">Ieškok prekių, palygink parduotuves ir susidėk savo pirkinių krepšelį vienoje vietoje.</p>
-          <div className="mt-7 max-w-xl">
+          <p className="mt-5 max-w-md text-[15px] leading-7 text-[#536b59]">Ieškok prekių, palygink parduotuves ir susidėk savo pirkinių krepšelį vienoje vietoje.</p></div></div>
+          <div className={`max-w-xl transition-[margin] duration-500 ease-in-out motion-reduce:transition-none ${isSearching ? "mt-0" : "mt-7"}`}>
             <label htmlFor="product-search" className="sr-only">Ieškoti prekės</label>
             <div className="relative">
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-400"><circle cx="11" cy="11" r="7" /><path d="m16 16 4 4" strokeLinecap="round" /></svg>
@@ -277,9 +316,14 @@ export default function Home() {
               type="text"
               placeholder="Ko ieškai? Pvz., pieno ar kavos"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-2xl border border-white bg-white py-[18px] pl-12 pr-4 text-[15px] text-neutral-900 shadow-[0_10px_30px_rgba(28,65,39,0.07)] outline-none placeholder:text-neutral-400 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 transition"
+              onChange={(e) => {
+                const value = e.target.value;
+                setSearchQuery(value);
+                if (value.trim()) setCategory("");
+              }}
+              className="w-full rounded-2xl border border-white bg-white py-[18px] pl-12 pr-12 text-[15px] text-neutral-900 shadow-[0_10px_30px_rgba(28,65,39,0.07)] outline-none placeholder:text-neutral-400 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 transition"
             />
+            {isSearching && <button type="button" onClick={() => setSearchQuery("")} aria-label="Išvalyti paiešką" className="absolute right-3 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full text-xl text-[#6c7b70] hover:bg-[#edf4eb] hover:text-[#173d2d]">×</button>}
             </div>
             <label className="mt-4 inline-flex items-center gap-2.5 text-sm text-[#526b58] cursor-pointer select-none">
               <input
@@ -292,7 +336,7 @@ export default function Home() {
             </label>
           </div>
           </div>
-          <div className="relative rounded-[24px] bg-[#173d2d] p-6 text-white shadow-[0_18px_40px_rgba(26,66,41,0.14)] sm:p-7">
+          <div aria-hidden={isSearching} inert={isSearching} className={`grid transition-[grid-template-rows,opacity] duration-500 ease-in-out motion-reduce:transition-none ${isSearching ? "grid-rows-[0fr] opacity-0" : "grid-rows-[1fr] opacity-100"}`}><div className="overflow-hidden"><div className="relative rounded-[24px] bg-[#173d2d] p-6 text-white shadow-[0_18px_40px_rgba(26,66,41,0.14)] sm:p-7">
             <div aria-hidden="true" className="absolute right-5 top-5 grid h-9 w-9 place-items-center rounded-full border border-white/20 text-lg text-[#b9ddbd]">↗</div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#a8cbae]">Kaip tai veikia</p>
             <p className="mt-5 max-w-[210px] text-xl font-medium leading-snug tracking-tight">Nuo paieškos iki krepšelio – paprastai.</p>
@@ -301,25 +345,37 @@ export default function Home() {
               <li className="flex gap-3"><span className="text-[#91b99a]">02</span> Palygink jų kainas</li>
               <li className="flex gap-3"><span className="text-[#91b99a]">03</span> Sudaryk krepšelį</li>
             </ol>
-          </div>
+          </div></div></div>
           </div>
         </section>
 
-        <nav aria-label="Prekių kategorijos" className="mb-9 mt-11">
-          <div className="mb-4 flex items-baseline justify-between gap-4"><div><p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6b9074]">Atrask</p><h2 className="text-xl font-semibold tracking-tight">Ko šiandien ieškai?</h2></div><span className="hidden text-xs text-neutral-400 sm:inline">Pasirink kategoriją</span></div>
-          <div className="flex gap-2 overflow-x-auto pb-2">
-            {CATEGORY_OPTIONS.map(({ id: value, label }) => (
-              <button key={value} type="button" onClick={() => setCategory(value)} aria-pressed={category === value}
-                className={`shrink-0 rounded-full border px-4 py-2.5 text-sm font-medium transition ${category === value ? "border-[#173d2d] bg-[#173d2d] text-white" : "border-[#e2e9df] bg-white text-[#55635a] hover:border-emerald-500 hover:text-emerald-800"}`}>
+        <div aria-hidden={isSearching} inert={isSearching} className={`grid transition-[grid-template-rows,opacity] duration-500 ease-in-out motion-reduce:transition-none ${isSearching ? "grid-rows-[0fr] opacity-0" : "grid-rows-[1fr] opacity-100"}`}><div className="overflow-hidden"><nav aria-label="Prekių kategorijos" className="my-8 rounded-[28px] border border-[#e5ebe2] bg-white p-5 shadow-[0_8px_30px_rgba(30,55,35,0.035)] sm:p-7 md:my-10">
+          <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6b9074]">Naršyk pagal kategoriją</p>
+              <h2 className="text-xl font-semibold tracking-tight text-[#173d2d] sm:text-2xl">Ko šiandien ieškai?</h2>
+              <p className="mt-1.5 text-sm text-[#78867a]">Pasirink kategoriją arba ieškok tarp visų prekių.</p>
+            </div>
+            <span className="rounded-full bg-[#f2f6f0] px-3 py-1.5 text-xs font-medium text-[#66816d]">{CATEGORY_OPTIONS.length - 1} kategorijų</span>
+          </div>
+          <div id="category-list" className="flex flex-wrap gap-2">
+            {CATEGORY_OPTIONS.filter((option, index) => showAllCategories || index < 8 || option.id === category).map(({ id: value, label }) => (
+              <button key={value} type="button" onClick={() => { setCategory(value); setSearchQuery(""); }} aria-pressed={category === value}
+                className={`rounded-xl border px-4 py-2.5 text-left text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 ${category === value ? "border-[#173d2d] bg-[#173d2d] text-white shadow-sm" : "border-[#e8eee6] bg-[#f8faf7] text-[#506457] hover:border-[#a9c8ae] hover:bg-[#edf5ec] hover:text-[#173d2d]"}`}>
                 {label}
               </button>
             ))}
           </div>
-        </nav>
+          <button type="button" aria-expanded={showAllCategories} aria-controls="category-list" onClick={() => setShowAllCategories((open) => !open)}
+            className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#347451] transition hover:text-[#173d2d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700">
+            {showAllCategories ? "Rodyti mažiau" : `Visos kategorijos (${CATEGORY_OPTIONS.length - 1})`}
+            <span aria-hidden="true" className={`inline-block transition-transform ${showAllCategories ? "rotate-180" : ""}`}>↓</span>
+          </button>
+        </nav></div></div>
 
         {/* ---------- prekės ---------- */}
         {!loading && !error && (
-          <div className="mb-5 flex items-baseline justify-between gap-4 border-t border-[#e6ebe3] pt-7"><div><p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6b9074]">Palygink</p><h2 className="text-xl font-semibold tracking-tight">Atrask prekes</h2></div><p className="text-sm text-neutral-400">{pagination.total.toLocaleString("lt-LT")} prekių</p></div>
+          <div className={`mb-5 flex items-baseline justify-between gap-4 border-t border-[#e6ebe3] pt-7 ${isSearching ? "mt-6" : ""}`}><div><p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6b9074]">Palygink</p><h2 className="text-xl font-semibold tracking-tight">{isSearching ? "Paieškos rezultatai" : "Atrask prekes"}</h2></div><p className="text-sm text-neutral-400">{pagination.total.toLocaleString("lt-LT")} prekių</p></div>
         )}
 
         {loading ? (
@@ -332,7 +388,7 @@ export default function Home() {
           <div className="py-20 text-center">
             <p className="text-red-600 mb-4">{error}</p>
             <button
-              onClick={() => fetchProducts(pagination.page, searchQuery, compareOnly, category)}
+              onClick={() => fetchProducts(1, searchQuery, compareOnly, category)}
               className="px-5 py-2.5 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-700 transition"
             >
               Bandyti iš naujo
@@ -441,26 +497,11 @@ export default function Home() {
           </ul>
         )}
 
-        {/* Puslapiavimas */}
-        {!loading && !error && pagination.totalPages > 1 && (
-          <div className="flex items-center justify-center gap-6 py-14 text-sm">
-            <button
-              disabled={pagination.page === 1}
-              onClick={() => handlePageChange(pagination.page - 1)}
-              className="font-medium disabled:opacity-30 hover:underline"
-            >
-              ← Atgal
-            </button>
-            <span className="text-neutral-400 tabular-nums">
-              {pagination.page} / {pagination.totalPages}
-            </span>
-            <button
-              disabled={pagination.page === pagination.totalPages}
-              onClick={() => handlePageChange(pagination.page + 1)}
-              className="font-medium disabled:opacity-30 hover:underline"
-            >
-              Toliau →
-            </button>
+        {!loading && !error && products.length > 0 && (
+          <div ref={loadMoreRef} className="flex min-h-24 flex-col items-center justify-center gap-3 py-8 text-sm text-neutral-400" aria-live="polite">
+            {loadingMore ? "Kraunama daugiau prekių…" : loadMoreError ? (
+              <><span>{loadMoreError}</span><button type="button" onClick={() => fetchProducts(pagination.page + 1, searchQuery, compareOnly, category)} className="font-medium text-emerald-700 underline underline-offset-4">Bandyti dar kartą</button></>
+            ) : pagination.page >= pagination.totalPages ? "Parodytos visos prekės" : null}
           </div>
         )}
       </main>
