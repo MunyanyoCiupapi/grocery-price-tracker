@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { Product, StorePrices } from "@/types/products";
 import { getPool } from "@/lib/db";
 import { normalizeSearchText } from "@/lib/groupKey";
+import { CATEGORY_OPTIONS } from "@/lib/sourceCategories";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -71,17 +72,29 @@ export async function GET(request: Request) {
         const search = normalizeSearchText((searchParams.get("q") || "").slice(0, 100));
         const compareOnly = searchParams.get("compare") === "1"; // tik prekės, parduodamos ≥2 parduotuvėse
 
+        const category = searchParams.get("category") || "";
         const terms = search.split(" ").filter(Boolean).slice(0, MAX_TERMS);
 
         const params: unknown[] = [];
         const where: string[] = [`last_seen > now() - interval '${FRESH_DAYS} days'`];
 
+        const searchConditions: string[] = [];
         for (const term of terms) {
             params.push(`%${escapeLike(term)}%`);
-            where.push(`name_search ilike $${params.length}`);
+            searchConditions.push(`name_search ilike $${params.length}`);
         }
 
-        // rūšiavimas: pirmiausia prekės, esančios daugiau parduotuvių, tada tos, kurios prasideda ieškomu žodžiu
+        const having: string[] = [];
+        // Ieškome pagal bent vienos parduotuvės pavadinimą, bet išlaikome visos grupės pasiūlymus.
+        if (searchConditions.length) having.push(`bool_or(${searchConditions.join(" and ")})`);
+        if (compareOnly) having.push("count(distinct store) >= 2");
+        if (category === "kitos") {
+            having.push("not bool_or(cardinality(category_codes) > 0)");
+        } else if (category && CATEGORY_OPTIONS.some((option) => option.id === category)) {
+            params.push(category);
+            having.push(`bool_or($${params.length} = any(category_codes))`);
+        }
+
         let startsWithOrder = "";
         if (terms.length > 0) {
             params.push(`${escapeLike(terms[0])}%`);
@@ -105,7 +118,7 @@ export async function GET(request: Request) {
             from public.store_products
             where ${where.join(" and ")}
             group by group_key
-            ${compareOnly ? "having count(distinct store) >= 2" : ""}
+            ${having.length ? `having ${having.join(" and ")}` : ""}
             order by count(distinct store) desc, ${startsWithOrder}min(name_search) asc, group_key asc
             limit $${limitIdx} offset $${offsetIdx}
         `;

@@ -98,7 +98,7 @@ function makeProductId(productUrl: string): string {
 async function extractItems(page: Page) {
     return page
         .evaluate(() => {
-            const items: any[] = [];
+            const items: { title: string; price: number; oldPrice: number | undefined; isOnSale: boolean; measurementUnit: string; fullUrl: string; imageUrl: string | undefined }[] = [];
             const cards = document.querySelectorAll("li.product-grid__item");
 
             cards.forEach((card) => {
@@ -153,7 +153,7 @@ async function extractItems(page: Page) {
 
             return items;
         })
-        .catch(() => [] as any[]);
+        .catch(() => []);
 }
 
 async function scrollToBottom(page: Page) {
@@ -218,7 +218,7 @@ async function scrollToBottom(page: Page) {
                     await page.goto(baseUrl, { waitUntil: "domcontentloaded", timeout: 60000 });
                     loaded = true;
                     break;
-                } catch (e) {
+                } catch {
                     console.log(`${tag} ⚠️ Bandymas ${attempt}/3 nepavyko`);
                     await randomDelay(2000, 4000);
                 }
@@ -234,7 +234,7 @@ async function scrollToBottom(page: Page) {
                     await cookieBtn.click();
                     await randomDelay(500, 900);
                 }
-            } catch (err) {}
+            } catch {}
 
             let currentPage = 1;
 
