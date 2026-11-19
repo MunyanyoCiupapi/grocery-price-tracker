@@ -10,8 +10,9 @@ const __dirname = path.dirname(__filename);
 // IKI tinklo (chain) ID LastMile sistemoje:
 const IKI_CHAIN_ID = "CvKfTzV4TN5U8BTMF1Hl";
 
-const API_URL = "https://searchservice-952707942140.europe-north1.run.app/v1/frontend-products";
-const CATEGORIES_URL = "https://searchservice-952707942140.europe-north1.run.app/categories";
+const SEARCH_URL = "https://api.lastmile-delivery.pickitoo.app/searchService";
+const API_URL = `${SEARCH_URL}/v1/frontend-products`;
+const CATEGORIES_URL = `${SEARCH_URL}/categories`;
 
 async function fetchCategories(): Promise<Map<string, IkiCategory>> {
   const response = await fetch(CATEGORIES_URL, {
